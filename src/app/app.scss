@@ -17,7 +17,9 @@
 @font-face { /* http://emojione.com/developers/ */
     font-family: Emojione;
     src: local("EmojiOne BW"), local("EmojiOne"), local("Emoji One"), 
-    url("../assets/fonts/emojione-android.ttf") format("truetype");         
+ //   url("../assets/fonts/emojione-android.ttf") format("truetype");  //Web
+    url("../assets/fonts/emojione-svg.woff") format("truetype");         //Device
+         
 }
 
 @font-face {

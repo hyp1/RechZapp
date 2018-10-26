@@ -1,15 +1,40 @@
 <ion-header>
-  <ion-navbar>
-    <ion-title>
-      Ionic Blank
-    </ion-title>
-  </ion-navbar>
-</ion-header>
-
-<ion-content padding>
-  The world is your oyster.
-  <p>
+    <ion-toolbar>
+        <button ion-button menuToggle left>
+          <ion-icon name="menu"></ion-icon>
+        </button>
+              <ion-title>
+                RechZapp
+              </ion-title>
+        <ion-buttons end>
+          <button ion-button (click)="doClick()">
+            <ion-icon name="more"></ion-icon>
+          </button>
+        </ion-buttons>
+    </ion-toolbar>  
+  </ion-header>
+  
+    <ion-content padding>
+        <ion-list>
+            <ion-item>
+              <ion-label> <ion-icon name="search"></ion-icon></ion-label>
+              <ion-input placeholder="Rechtsfrage suchen..." clearInput></ion-input>
+            </ion-item>
+            </ion-list>
+            <h1><img class="avatar" src="https://graph.facebook.com/100000611529195/picture">Robert Schweng<p>Do, 25/10/2018 - 13:34</p></h1>            
+      <h2>(Anonym):Ich habe versehentlich ein Brandloch im Autositz meines geleasten Autos verursacht.
+          Das habe ich der Versicherung gemeldet.
+          Meine Versicherung hat nun wie folgt Stellung dazu genommen: Es handle sich trotzdem um einen Eigenschaden, da ich der Halter dieses Fahrzeuges bin.
+          Kann es wirklich sein, dass sowas nicht von der Privathaftpflichversicherung übernommen wird? 💩😡</h2>
+    <p>
       ❤️ 😊 😉 😯 😀 😚
-    If you get lost, the <a href="http://ionicframework.com/docs/v2">docs</a> will be your guide.
-  </p>
-</ion-content>
+      If you get lost, the <a href="http://ionicframework.com/docs/v2">docs</a> will be your guide.
+    </p>
+  </ion-content>
+  
+  
+  <ion-footer>
+    <ion-toolbar>
+      <ion-title>Footer</ion-title>
+    </ion-toolbar>
+  </ion-footer>
