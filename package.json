@@ -25,6 +25,7 @@
         "@ionic-native/splash-screen": "~4.15.0",
         "@ionic-native/status-bar": "~4.15.0",
         "@ionic/storage": "2.2.0",
+        "cordova": "^8.1.2",
         "cordova-admob-sdk": "^0.20.1",
         "cordova-android": "^6.2.3",
         "cordova-plugin-admob-free": "^0.21.0",
