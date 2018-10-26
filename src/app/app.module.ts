@@ -8,7 +8,7 @@ import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
 
 //AdMob
-import { AdMobFree, AdMobFreeBannerConfig } from '@ionic-native/admob-free';
+import { AdMobFree } from '@ionic-native/admob-free';
 
 @NgModule({
   declarations: [
