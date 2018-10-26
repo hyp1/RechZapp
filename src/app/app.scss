@@ -14,3 +14,14 @@
 // To declare rules for a specific mode, create a child rule
 // for the .md, .ios, or .wp mode classes. The mode class is
 // automatically applied to the <body> element in the app.
+@font-face { /* http://emojione.com/developers/ */
+    font-family: Emojione;
+    src: local("EmojiOne BW"), local("EmojiOne"), local("Emoji One"), 
+    url("../assets/fonts/emojione-android.ttf") format("truetype");         
+}
+
+@font-face {
+    font-family: Emojione;
+    src: local("Arial");
+    unicode-range: U+0000-00FF;
+}
