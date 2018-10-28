@@ -1,4 +1,4 @@
-page-home {
+page-search {
     @media (max-width: 576px) {
         ion-card-content {
             font-size: 2rem !important;
@@ -15,10 +15,10 @@ page-home {
         .web-fab {
             display: none;
         }
+        ion-card-content {
+            font-size: 2rem !important;
+            background-color: lightcyan;
+        }
     }
  }
  
-.avatar{
-    border-radius:50%;
-    vertical-align: middle;
-}

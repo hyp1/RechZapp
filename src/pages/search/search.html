@@ -1,0 +1,60 @@
+<ion-header>
+
+    <ion-navbar>
+        <ion-buttons start>
+          <button ion-button menuToggle>
+            <ion-icon name="menu"></ion-icon>
+          </button>
+          </ion-buttons>
+          
+              <ion-title>
+                Suchen
+              </ion-title>
+        <ion-buttons end>
+            <button ion-button (click)="this.awri.getInfo()">
+               {{this.awri.username}}
+              </button>
+      
+        </ion-buttons>
+    </ion-navbar> 
+    
+  </ion-header>
+  
+<ion-content padding>
+
+ <ion-grid>
+   <ion-row>
+     <ion-col *ngFor="let item of items | async" col-12 col-md-4>
+       <ion-card>
+         <ion-item>
+           <ion-avatar item-start>
+              <img class="avatar" src="https://graph.facebook.com/{{item.node?.field_fbid.und[0].value}}/picture"> 
+            </ion-avatar>
+           <h2 text-capitalize>{{item.node?.field_fbname.und[0].value}} {{item.node?.field_fbid.und[0].value}}</h2>
+         </ion-item>
+         <ion-card-content>
+
+                  <h2 innerHTML={{item.snippet}}></h2> 
+                  <p>{{ item.node?.nid }}</p>
+                  <p> {{item.extra?.comment}}</p> 
+                  <p>Suchwert {{item.score}}<p> 
+     
+         </ion-card-content>
+       </ion-card>
+     </ion-col>
+   </ion-row>
+ </ion-grid>
+
+ <ion-fab right bottom class="web-fab">
+    <button ion-fab icon-only color="primary" (click)="checkPlatform()">
+      <ion-icon name="help"></ion-icon>
+    </button>
+   </ion-fab>
+   
+   <ion-fab right top edge class="mobile-fab">
+    <button ion-fab icon-only color="secondary" (click)="checkPlatform()">
+      <ion-icon name="help"></ion-icon>
+    </button>
+   </ion-fab>
+
+</ion-content>

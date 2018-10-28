@@ -14,7 +14,7 @@
     "target": "es5"
   },
   "include": [
-    "src/**/*.ts"
+    "src/**/*.ts", "../devdacticResponsive/src/pages/search/search.ts"
   ],
   "exclude": [
     "node_modules",
