@@ -86,6 +86,5 @@
         <variable name="ADMOB_APP_ID" value="ca-app-pub-7681642173883266~6820035049" />
     </plugin>
     <preference name="phonegap-version" value="cli-7.1.0" />
-    <plugin name="cordova-sqlite-storage" spec="2.5.0" />
     <engine name="android" spec="7.1.0" />
 </widget>
