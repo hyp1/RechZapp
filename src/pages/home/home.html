@@ -1,5 +1,4 @@
 <ion-header>
-
     <ion-navbar>
         <ion-buttons start>
             <button ion-button menuToggle>
@@ -13,14 +12,11 @@
             <ion-buttons end>
              <button ion-button (click)="this.awri.getInfo()">
                {{this.awri.username}}
-              </button>
-      
+              </button>      
         </ion-buttons>
-    </ion-navbar> 
-    
+    </ion-navbar>   
   </ion-header>
-  
-  
+   
   <ion-content padding>
       
         <ion-list>
@@ -44,18 +40,19 @@
       
             <img src="assets/imgs/logo.png">
 
-  </ion-content>
-  <ion-fab right bottom class="web-fab">
-      <button ion-fab icon-only color="primary" (click)="checkPlatform()">
-        <ion-icon name="help"></ion-icon>
-      </button>
-     </ion-fab>
-     
-     <ion-fab right top edge class="mobile-fab">
-      <button ion-fab icon-only color="primary" (click)="checkPlatform()">
-        <ion-icon name="help"></ion-icon>
-      </button>
-     </ion-fab>
+            <ion-fab right bottom class="web-fab">
+                <button ion-fab icon-only color="primary" (click)="checkPlatform()">
+                  <ion-icon name="help"></ion-icon>
+                </button>
+               </ion-fab>
+               
+               <ion-fab right top edge class="mobile-fab">
+                <button ion-fab icon-only color="primary" (click)="checkPlatform()">
+                  <ion-icon name="help"></ion-icon>
+                </button>
+               </ion-fab>
+
+  </ion-content> 
   
   <ion-footer>
     <ion-toolbar>
