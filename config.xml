@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <widget id="io.ionic.starter" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>RechZapp</name>
-    <description>An awesome Ionic/Cordova app.</description>
+    <description>AWRI Rechtsfragen App</description>
     <author email="hi@ionicframework" href="http://ionicframework.com/">Ionic Framework Team</author>
     <content src="index.html" />
     <access origin="*" />
@@ -86,7 +86,6 @@
         <variable name="ADMOB_APP_ID" value="ca-app-pub-7681642173883266~6820035049" />
     </plugin>
     <preference name="phonegap-version" value="cli-7.1.0" />
-    <engine name="android" spec="7.1.1" />
-    <plugin name="cordova-plugin-sqlite" spec="1.0.3" />
     <plugin name="cordova-sqlite-storage" spec="2.5.0" />
+    <plugin name="cordova-sqlite-legacy" spec="2.0.1" />
 </widget>
