@@ -88,4 +88,5 @@
     <preference name="phonegap-version" value="cli-7.1.0" />
     <plugin name="cordova-sqlite-storage" spec="2.5.0" />
     <engine name="android" spec="7.1.0" />
+    <plugin name="cordova-plugin-sqlite-2" spec="1.0.5" />
 </widget>
