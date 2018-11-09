@@ -1,9 +1,10 @@
-import { Component } from '@angular/core';
+import { Component,Input,ViewChild } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { AwriConnectProvider } from '../../providers/awri-connect/awri-connect';
 
+
 import 'rxjs/add/operator/map';
-import { ElementRef } from '@angular/core';
+import { LoginPage } from '../../pages/login/login';
 /**
  * Generated class for the SettingsPage page.
  *
@@ -16,51 +17,117 @@ import { ElementRef } from '@angular/core';
   selector: 'page-settings',
   templateUrl: 'settings.html',
 })
+
+
 export class SettingsPage {
+  //@ViewChild('userField') username:Input;
+  private username:String;
+  private password:String;
+color:any;
 
-  uid:Number;
-  username:String;
-  password:String;
-  session:String;
-  token:String;
+  private fbtoken:String;
 
-  //username:string='root';
   //password:string='kimo2002';
-awri:AwriConnectProvider; 
-  constructor(public navCtrl: NavController, public navParams: NavParams, awri:AwriConnectProvider) {   
-this.awri=awri;
-this.uid=awri.uid;
-this.username=awri.username;
-this.session=awri.session;
-this.token=awri.token;
-
-
-  }
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad SettingsPage');
+private awri:AwriConnectProvider; 
+  constructor(public navCtrl: NavController,public navParams: NavParams,awri:AwriConnectProvider) {   
+    this.awri=awri;
+this.username=this.awri.username;
+this.getColor();
   }
   
-  getUsername(){
-    return this.username;
-  }
+  ionViewDidLoad() {
+    console.log('ionViewDidLoad SettingsPage');
+  //  setTimeout(() => {
+  //    this.username.setFocus();
+  //  }, 500);  
+  } 
 
+getUsername(){
+  return this.awri.username;
+}
 
 login(){
   //alert('username: ' + this.username);
   this.awri.login(this.username,this.password).then(data=>{
-    let res=<any>data
-    this.uid=<Number>res.uid;
-    this.username=<String>res.username;
-    this.session=<String>res.session;
-    this.token=<String>res.token;  
-  });;
+    console.log(data);
+  }).catch(err=>{
+      console.log("ERROR");
+  });
+  
  // console.log(this.mylblRef.nativeElement.innerText);
 //  this.username="Bert"
 }
 
-back(){
-this.navCtrl.pop();
+dofblogin(){
+this.awri.fblogin().then(data=>{
+let color:string;
+  let res=<any>data;
+  this.awri.access_token=<string>res.authResponse.accessToken; 
+
+  this.fbtoken=<string>res.authResponse.accessToken; 
+
+  console.log(this.fbtoken);
+  if(this.fbtoken)this.awri.fboauth(this.fbtoken).then(data2=>{
+    console.log(data2);
+    let res2=<any>data2;
+     
+
+  });
+ // console.log(data);
+});
 }
 
+connect(){
+  console.log("Connect")
+this.awri.connect().then(data=>{
+    //let res=<any>data;
+   // this.uid=<Number>res.uid; 
+  //  this.session=<String>res.session; 
+   // this.username=<String>res.username; 
+
+    console.log(data);
+  },err=>{
+
+    console.log(err);
+  });
+  
+  }
+
+authRequest(){
+
+this.awri.authRequest().then(data=>{
+  console.log(data);
+});
+
+}
+
+
+loadNode(){
+  this.awri.loadNode(18013).then(data=>{
+    console.log(data);
+  });
+}
+
+
+gotoLogin(){
+  this.navCtrl.push(LoginPage);
+}
+
+
+setColor(color){
+  this.awri.set('color',color).then(col=>{
+    this.color=col;
+  });
+}
+
+getColor(){
+  this.color=this.awri.get('color').then(col=>{
+    this.color=col;
+  });;
+}
+removeColor(){
+  this.awri.remove('color');
+  this.color="";
+}
 
 }

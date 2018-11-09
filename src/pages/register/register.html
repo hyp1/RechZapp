@@ -1,0 +1,38 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Registrieren</ion-title>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content padding>
+    <form #registerForm="ngForm" (ngSubmit)="register()" autocomplete="off">
+        <ion-row>
+          <ion-col>
+            <ion-list inset>
+                <ion-item>
+                    <ion-input placeholder="Username" name="username" id="userField"
+                               type="text" required [(ngModel)]="username" #user></ion-input>
+                  </ion-item>
+              <ion-item>
+                <ion-input placeholder="Email" name="email" id="emailField"
+                           type="email" required [(ngModel)]="email" #user></ion-input>
+              </ion-item>
+              <ion-item>
+                <ion-input placeholder="Password" name="password" id="passwordField"
+                           type="password" required [(ngModel)]="password"></ion-input>
+              </ion-item>
+            </ion-list>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            <div *ngIf="error" class="alert alert-danger">{{error}}</div>
+            <button ion-button round full class="submit-btn" type="submit"
+                    [disabled]="!registerForm.form.valid">Registrieren
+            </button>        
+            <button ion-button round full (click)="this.awri.fblogin()"> <ion-icon name="logo-facebook"></ion-icon>Facebook</button>     
+          </ion-col>
+        </ion-row>        
+      </form>
+</ion-content>

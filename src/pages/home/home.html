@@ -1,53 +1,98 @@
 <ion-header>
+
     <ion-navbar>
         <ion-buttons start>
             <button ion-button menuToggle>
               <ion-icon name="menu"></ion-icon>
             </button>
             </ion-buttons>
-                
-              <ion-title>
-                Home
+             
+            <ion-title>
+                Home 
               </ion-title>
-            <ion-buttons end>
-             <button ion-button (click)="this.awri.getInfo()">
-               {{this.awri.username}}
-              </button>      
-        </ion-buttons>
-    </ion-navbar>   
-  </ion-header>
+      <ion-buttons end>
+  <ng-template [ngIf]="this.awri.isInRole('authenticated user')" [ngIfElse]="headerOut">
+              <button ion-button (click)="gotoLogin()">
+                  <img class="avatar" src="{{this.awri.userpic}}"> {{awri.username}}        
+                </button>
+  </ng-template>      
+  <ng-template #headerOut>
+              <button ion-button (click)="gotoLogin()">
+              <ion-icon name="contact"></ion-icon>  {{awri.username}}
+              </button>
+  </ng-template>
+      </ion-buttons>    
+    </ion-navbar>
+
+</ion-header>
    
   <ion-content padding>
-      
+      <ng-template [ngIf]="!awri.isInRole('authenticated user')" >
+          <ion-label color="danger"><h2><ion-img  src="assets/imgs/anonymous.png"></ion-img> Sie sind nicht angemeldet!</h2></ion-label>
+            <ion-label>Bitte melden sie sich um Zugriff auf erweiterte Funktionen zu erhalten.</ion-label>
+            <button ion-button small (click)="gotoLogin()">Anmelden</button>               
+        </ng-template>
+
+
+    
         <ion-list>
             <ion-item>
               <ion-label> <ion-icon name="search"></ion-icon></ion-label>
               <ion-input  [(ngModel)]="text" placeholder="Rechtsfrage suchen..." clearInput></ion-input>
             </ion-item>
             </ion-list>
-            <button ion-button round full (click)="dosearch()"> Suchen <ion-icon name="search" left></ion-icon></button>
+            <button ion-button round full (click)="dosearch()" icon-start><ion-icon name="search" item-right></ion-icon>  Suchen </button>
       
-            <ion-list inset>          
-              <button ion-item *ngFor="let item of items" (click)="itemSelected(item)">
-                  <ion-item text-wrap>
-                  <h1><img class="avatar" src="https://graph.facebook.com/{{item.node?.field_fbid.und[0].value}}/picture"> {{item.node?.field_fbname.und[0].value}}</h1> 
-                  <h2 innerHTML={{item.snippet}}></h2> 
-                  <p> {{item.extra?.comment}}</p> 
-                  <p>Suchwert {{item.score}}<p> 
-                </ion-item> 
-              </button>
-            </ion-list>            
+            <ion-grid>
+              <ion-row>
+                <ion-col *ngFor="let item of items" col-12 col-md-4>
+                  <ion-card  (click)="this.itemSelected(item)">
+                    <ion-item>        
+                     <ng-template [ngIf]="awri.isInRole('authenticated user')" [ngIfElse]="loggedOut1">
+                      <ion-avatar item-start>
+                         <img class="avatar" src="https://graph.facebook.com/{{item.node?.field_fbid.und[0].value}}/picture"> 
+                         <h2 text-capitalize>{{item.node?.field_fbname.und[0].value}}</h2>
+                       </ion-avatar>
+                       
+                     </ng-template>
+                     <ng-template #loggedOut1>
+                         <ion-avatar item-start>
+                             <img class="avatar" src="assets/imgs/anonymous.png"> 
+                           </ion-avatar>
+                           <h2 text-capitalize>Nicht angezeigt</h2>
+                       </ng-template>
+                    </ion-item>
+                    <ion-card-content>
+           
+                             <h2 innerHTML={{item.snippet}}></h2> 
+                             <p> {{item.extra?.comment}}</p> 
+                             <p>Suchrelevanz {{item.score}}<p>      
+                    </ion-card-content>
+                  </ion-card>
+                </ion-col>
+              </ion-row>
+            </ion-grid>     
       
-            <img src="assets/imgs/logo.png">
+            <ion-label color="danger" text-wrap>Wir haben unser System erneuert, die gewohnte AWRI Seite finden Sie nun hier: <a href="https://stage.awri.ch" target="_new">https://stage.awri.ch</a></ion-label>
+
+            <div class="mobile-fab"><ion-label color="primary" text-wrap>Bitte noch etwas Geduld, weitere Updates folgen in Kürze... </ion-label></div>
 
             <ion-fab right bottom class="web-fab">
-                <button ion-fab icon-only color="primary" (click)="checkPlatform()">
+                <button ion-fab icon-only color="primary" (click)="this.awri.checkPlatform()">
                   <ion-icon name="help"></ion-icon>
                 </button>
+                <ion-fab-list side="top">
+                  <button ion-fab>Facebook</button>
+                  <button ion-fab>Twitter</button>
+                  <button ion-fab>Youtube</button>
+                </ion-fab-list>
+                <ion-fab-list side="left">
+                  <button ion-fab>Vimeo</button>
+                </ion-fab-list>
                </ion-fab>
                
                <ion-fab right top edge class="mobile-fab">
-                <button ion-fab icon-only color="primary" (click)="checkPlatform()">
+                <button ion-fab icon-only color="primary" (click)="this.awri.checkPlatform()">
                   <ion-icon name="help"></ion-icon>
                 </button>
                </ion-fab>
@@ -56,6 +101,6 @@
   
   <ion-footer>
     <ion-toolbar>
-      <ion-title>Footer</ion-title>
+      <ion-title>Powered by <a href="{{this.awri.HOST}}" target="_BLANK">AWRI</a></ion-title>
     </ion-toolbar>
   </ion-footer>

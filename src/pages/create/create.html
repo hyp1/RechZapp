@@ -1,0 +1,88 @@
+<ion-header>
+
+    <ion-navbar>
+        <ion-buttons start>
+            <button ion-button menuToggle>
+              <ion-icon name="menu"></ion-icon>
+            </button>
+            </ion-buttons>
+             
+            <ion-title>
+                Frage stellen 
+              </ion-title>
+      <ion-buttons end>
+  <ng-template [ngIf]="this.awri.isInRole('authenticated user')" [ngIfElse]="headerOut">
+              <button ion-button (click)="this.gotoLogin()">
+                  <img class="avatar" src="{{this.awri.userpic}}"> {{awri.username}}        
+                </button>
+  </ng-template>      
+  <ng-template #headerOut>
+              <button ion-button (click)="this.gotoLogin()">
+              <ion-icon name="contact"></ion-icon>  {{awri.username}}
+              </button>
+  </ng-template>
+      </ion-buttons>    
+    </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+
+  <ng-template [ngIf]="this.awri.isInRole('authenticated user')" [ngIfElse]="loggedOut">
+      <h2>Ihre Rechtsfrage wird anonym gestellt!</h2> 
+      <p>Bitte beschreiben Sie den Sachverhalt möglichst genau und wählen sie den betreffenden Kanton aus.</p>
+    <form #createForm="ngForm" (ngSubmit)="sendFrage()">
+
+        <ion-input type="hidden" value="{{this.awri.username}}" name="username" disabled></ion-input>
+        <ion-input type="hidden" value="{{this.awri.fbid}}" name="username" disabled></ion-input>
+        <ion-item>
+            <ion-label>Kanton</ion-label>
+            <ion-select [(ngModel)]="kanton" name="kanton" (change)="selectKanton($event)">
+
+                <ion-option *ngFor="let item of kantone" value="{{item.name}}" id="{{item.tid}}">{{item.name}}</ion-option>
+
+            </ion-select>
+          </ion-item>       
+        <ion-item>
+          <ion-label>*Ihre Rechtsfrage</ion-label>
+          <ion-textarea required [(ngModel)]="todo.description" name="description"></ion-textarea>
+        </ion-item>
+        <div *ngIf="error" class="alert alert-danger">{{error}}</div>
+        <button ion-button class="submit-btn" full type="submit"
+                [disabled]="!createForm.form.valid">Frage senden
+        </button>        
+      </form>
+    </ng-template>
+      <!-- UploadComponent-->
+      <upload></upload>
+
+    <ng-template #loggedOut> 
+        <ion-label color="danger" text-wrap><h2><ion-img  src="assets/imgs/anonymous.png"></ion-img> Sie sind nicht angemeldet!</h2></ion-label>
+        <ion-label text-wrap>Bitte melden sie sich an um anonyme Rechtsfragen zu stellen.</ion-label>
+        <button ion-button small (click)="gotoLogin()">Anmelden</button>
+        <form #createForm="ngForm" (ngSubmit)="sendFrage()">
+            <ion-item>
+              <ion-label>Name</ion-label>
+              <ion-input type="text" value="{{this.awri.username}}" name="username" disabled></ion-input>
+            </ion-item>
+                <ion-input type="hidden" value="{{this.awri.fbid}}" name="username" disabled></ion-input>
+              <ion-item>
+                  <ion-label>Kanton</ion-label>
+                  <ion-select [(ngModel)]="kanton" name="kanton" (ionChange)="selectKanton($event)">
+                      <ion-option *ngFor="let item of kantone" value="{{item.name}}" id="{{item.tid}}">{{item.name}}</ion-option>
+      
+                  </ion-select>
+                </ion-item>       
+              <ion-item>
+                <ion-label color="danger">*Ihre Rechtsfrage</ion-label>
+                <ion-textarea required [(ngModel)]="todo.description" name="description" disabled></ion-textarea>
+              </ion-item>
+              <div *ngIf="error" class="alert alert-danger">{{error}}</div>
+              <button ion-button class="submit-btn" full type="submit"
+              disabled>Frage senden
+              </button>        
+            </form>
+    </ng-template>
+
+    </ion-content>

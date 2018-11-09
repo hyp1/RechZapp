@@ -15,6 +15,14 @@ import { AwriConnectProvider } from '../providers/awri-connect/awri-connect';
 import { HttpClientModule } from '@angular/common/http'
 import { SearchPage } from '../pages/search/search';
 import { SettingsPage } from '../pages/settings/settings';
+import { ViewPage } from '../pages/view/view';
+import { RegisterPage } from '../pages/register/register';
+import { LoginPage } from '../pages/login/login';
+import { CreatePage } from '../pages/create/create';
+
+import { Camera} from '@ionic-native/camera';
+
+import { UploadComponent } from '../components/upload/upload';
 
 
 @NgModule({
@@ -22,30 +30,43 @@ import { SettingsPage } from '../pages/settings/settings';
     MyApp,
     HomePage,
     SearchPage,
-    SettingsPage
-
+    SettingsPage,
+    ViewPage,
+    RegisterPage,
+    CreatePage,
+    LoginPage,
+    UploadComponent
   ],
+  
   imports: [
     BrowserModule,
     IonicModule.forRoot(MyApp),
     IonicStorageModule.forRoot(),
-    HttpClientModule
-  ],
+    HttpClientModule,
+  ],   
 
-  
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
     HomePage,
     SearchPage,
-    SettingsPage
+    SettingsPage,
+    ViewPage,
+    RegisterPage,
+    CreatePage,
+    LoginPage,
   ],
+
   providers: [
     StatusBar,    
     SplashScreen,
     AdMobFree,
+    Camera,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
-    AwriConnectProvider
+    AwriConnectProvider,
+    UploadComponent
   ]
 })
+
+
 export class AppModule {}

@@ -1,0 +1,90 @@
+<!-- Generated template for the UploadComponent component -->
+    <ion-item>
+        <ion-label id="profile_image" color="primary" stacked><h2>{{text}}</h2></ion-label> 
+      </ion-item>
+
+      
+<ng-template [ngIf]="awri.isInRole('authenticated user')" [ngIfElse]="letupload">
+
+        <ng-template [ngIf]="awri.isBrowser()" [ngIfElse]="isApp">
+                <button ion-button [(ngModel)]="toggleFiles" name="toggleFiles" ngDefaultControl (click)="toggleFil()">Dateien</button>
+                <div *ngIf="toggleFiles">
+                <div *ngIf="!hideUpl">
+                    <ion-input  id="filefield0"  type="file" accept="image/*" (change)="this.selectWebFile($event);"></ion-input>
+                </div>
+                </div>
+                
+                <hr>
+                      <button ion-button [(ngModel)]="toggleVideo" name="toggleVideo" ngDefaultControl (click)="toggleVid()">Kamera</button>
+                     <ion-card>
+                      <ion-item *ngIf="toggleVideo">
+                            <video id="video1" width="640" height="480" autoplay></video>
+                            <button id="snap1" ion-button (click)="toggleCam($event)" block>Start Kamera</button>
+                            <canvas id="canvas1" width="640" height="480" style="display:none;"></canvas>
+                            <div *ngIf="!hideUpl">                        
+                            <button id="snap" [disabled]="!togglePhoto"  ion-button (click)="selectWebVideo(this)" block>Photo</button>
+                            </div>
+                      </ion-item>
+                    </ion-card>
+                </ng-template>
+                <ng-template #isApp>
+                        <div *ngIf="!hideUpl">
+                         
+                            <button ion-button full (click)="nativeCamera()">Kamera</button>
+                            <button ion-button full (click)="nativeSelectFile()">Dateien</button>            
+                        </div>
+                </ng-template>
+        
+        <div *ngFor="let image of files;index as i">
+                <ion-card>
+                    <img id="image{{i}}" src="" name=""> 
+                    <ion-label>{{image.name}}</ion-label>
+                    <ion-row>
+                    <ion-buttons>
+                    <button ion-button left>
+                    <ion-icon name="trash" (click)="removeImage(i)"></ion-icon>
+                </button>
+                <button ion-button right>
+                <ion-icon name="cloud-upload" (click)="uploadFile(i)"></ion-icon>
+            </button>
+        </ion-buttons>    
+        </ion-row>
+            </ion-card>
+        </div>
+        <button ion-button right (click)="uploadAllFiles()">Alle Hochladen</button>
+
+      </ng-template>
+
+      <ng-template #letupload>
+        <ion-item>
+            <ion-label id="profile_image" color="danger" stacked><h2>Natürlich nur, wenn sie angemeldet angemeldet sind! ;-)
+            </h2></ion-label> 
+          </ion-item>
+
+      </ng-template>
+
+
+
+<!--
+    <button ion-button full (click)="uploadFile('image0')">Dateien hochladen</button>
+    <ion-card><img id="image0" src="assets/imgs/anonymous.png" name="test"> <ion-icon name="trash" (click)="removeImage(0)"></ion-icon></ion-card>
+    <ion-card><img id="image1" src="assets/imgs/anonymous.png" name="test"> <ion-icon name="trash" (click)="removeImage(1)"></ion-icon></ion-card>
+<ion-card><img id="image2" src="assets/imgs/anonymous.png" name="test"> <ion-icon name="trash" (click)="removeImage(2)"></ion-icon></ion-card>
+    <ion-card><img id="image3" src="assets/imgs/anonymous.png" name="test"> <ion-icon name="trash" (click)="removeImage(3)"></ion-icon></ion-card>
+        <ion-card><img id="image4" src="assets/imgs/anonymous.png" name="test"> <ion-icon name="trash" (click)="removeImage(4)"></ion-icon></ion-card>
+        <button ion-button class="submit-btn" full type="submit"
+        [disabled]="getImageID()==0">Dateien hochladen
+</button>
+-->
+
+
+<!--
+<ion-item *ngFor="let file of files;index as i">{{file.fid}} {{file.name}}
+    <ion-input  id="filefield{{i}}"  type="file" accept="image/*" (change)="this.test($event,i);"></ion-input>
+</ion-item>
+-->
+
+
+  
+
+

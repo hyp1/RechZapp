@@ -2,56 +2,68 @@
 
     <ion-navbar>
         <ion-buttons start>
-          <button ion-button menuToggle>
-            <ion-icon name="menu"></ion-icon>
-          </button>
-          </ion-buttons>
-          
-              <ion-title>
-                Settings
+            <button ion-button menuToggle>
+              <ion-icon name="menu"></ion-icon>
+            </button>
+            </ion-buttons>
+             
+            <ion-title>
+                Einstellungen 
               </ion-title>
-        <ion-buttons end>
-            <button ion-button (click)="this.awri.getInfo()">
-               {{this.awri.username}}
+      <ion-buttons end>
+  <ng-template [ngIf]="this.awri.isInRole('authenticated user')" [ngIfElse]="headerOut">
+              <button ion-button (click)="this.gotoLogin()">
+                  <img class="avatar" src="{{this.awri.userpic}}"> {{awri.username}}        
+                </button>
+  </ng-template>      
+  <ng-template #headerOut>
+              <button ion-button (click)="this.gotoLogin()">
+              <ion-icon name="contact"></ion-icon>  {{awri.username}}
               </button>
-      
-        </ion-buttons>
-    </ion-navbar> 
-    
-  </ion-header>
+  </ng-template>
+      </ion-buttons>    
+    </ion-navbar>
+
+</ion-header>
+
+  
 
 <ion-content padding>
-  <ion-item>
-    <ion-label #mylbl>{{username}}</ion-label>
- </ion-item>
+ <ng-template [ngIf]="awri.isLoggedIn()" [ngIfElse]="loggedOut">
+    <ion-item>
+        <ion-label color="secondary">Verbunden mit {{this.awri.HOST}}</ion-label>
+     
+      </ion-item>
+      <ion-item>
+        <ion-label>Benutzername {{this.awri.username}}</ion-label> 
+     </ion-item>  
+     <button ion-button (click)="this.awri.clear()" color="danger">Einstellungen löschen</button>
+       
+</ng-template>
 
-  <form #loginForm="ngForm" (ngSubmit)="login()" autocomplete="off">
-    <ion-row>
-      <ion-col>
-        <ion-list inset>
-          <ion-item>
-            <ion-input placeholder="Email" name="username" id="loginField"
-                       type="text" required [(ngModel)]="username" #email></ion-input>
-          </ion-item>
-          <ion-item>
-            <ion-input placeholder="Password" name="password" id="passwordField"
-                       type="password" required [(ngModel)]="password"></ion-input>
-          </ion-item>
-        </ion-list>
-      </ion-col>
-    </ion-row>
-    <ion-row>
-      <ion-col>
-        <div *ngIf="error" class="alert alert-danger">{{error}}</div>
-        <button ion-button class="submit-btn" full type="submit"
-                [disabled]="!loginForm.form.valid">Login
-        </button>        
-      </ion-col>
-    </ion-row>
-  </form>
-  <h1>UID:{{uid}}</h1>
-  <h1>UID:{{username}}</h1>
-  <h1>Session:{{session}}</h1>
-  <h1>Token:{{token}}</h1>
-  <button ion-button round lightgray full (click)="back()">-</button>
+<ng-template #loggedOut>
+    <ion-label color="danger"><h2><ion-img  src="assets/imgs/anonymous.png"></ion-img> Sie sind nicht angemeldet!</h2></ion-label>
+    <ion-label>Bitte melden sie sich um Zugriff auf erweiterte Funktionen zu erhalten.</ion-label>
+    <button ion-button small (click)="gotoLogin()">Anmelden</button>        
+</ng-template>
+<ng-template [ngIf]="awri.isAdmin()">
+    <h1>UID:{{this.awri.uid}}</h1>
+    <h1>Username:{{this.awri.username}}</h1>
+    <h1>Session:{{this.awri.session}}</h1>
+    <h1>Token:{{token}}</h1>
+    <h1>FBToken:{{fbtoken}}</h1>
+    <button ion-button round lightgray full  (click)="dofblogin()"> <ion-icon name="logo-facebook"></ion-icon> Facebook Connect</button>
+    <button ion-button round lightgray full  (click)="connect()">Connect</button>
+    <button ion-button round lightgray full  (click)="this.authRequest()">Auth</button>
+    <button ion-button round lightgray full  (click)="this.loadNode()">Loadnode</button>
+
+    <p style="color:red">{{color}}</p>  
+    <button ion-button (click)="this.setColor('blue')">Set Color To Blue</button>
+    <button ion-button (click)="this.setColor('red')">Set Color To Red</button>
+    <button ion-button (click)="this.removeColor()">Remove Color Setting</button>  
+</ng-template>
+
+
+
+
 </ion-content>

@@ -3,14 +3,15 @@
         <ion-menu [content]="content" side="right">
           <ion-header>
             <ion-toolbar color="secondary">
+              
               <ion-title>Menu</ion-title>
             </ion-toolbar>
           </ion-header>
        
           <ion-content class="menu-container">
             <ion-list no-lines>
-              <button menuClose ion-item *ngFor="let p of pages" (click)="openPage(p)" class="transparent list-item">
-                {{p.title}}
+              <button menuClose ion-item *ngFor="let p of pages" (click)="openPage(p)" ngClass="{{p.isActive}}" class="transparent list-item">
+               <ion-icon item-start name="{{p.icon}}"></ion-icon> {{p.title}}
               </button>
             </ion-list>
           </ion-content>

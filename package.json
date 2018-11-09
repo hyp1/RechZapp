@@ -1,8 +1,8 @@
 {
     "name": "RechZapp",
     "version": "0.0.1",
-    "author": "Ionic Framework",
-    "homepage": "http://ionicframework.com/",
+    "author": "Robert Schweng",
+    "homepage": "https://awri.ch/",
     "private": true,
     "scripts": {
         "start": "ionic-app-scripts serve",
@@ -21,24 +21,28 @@
         "@angular/platform-browser": "5.2.11",
         "@angular/platform-browser-dynamic": "5.2.11",
         "@ionic-native/admob-free": "^4.16.0",
+        "@ionic-native/camera": "^4.17.0",
         "@ionic-native/core": "~4.15.0",
+        "@ionic-native/in-app-browser": "^4.17.0",
         "@ionic-native/splash-screen": "~4.15.0",
         "@ionic-native/status-bar": "~4.15.0",
         "@ionic/storage": "^2.2.0",
         "awriconnect": "git+https://github.com/hyp1/awri-connect.git",
         "clean": "4.0.2",
         "cordova": "^8.1.2",
-        "cordova-admob-sdk": "^0.20.1",
+        "cordova-admob-sdk": "^0.20.2",
         "cordova-android": "7.1.1",
         "cordova-plugin-admob-free": "^0.21.0",
+        "cordova-plugin-camera": "4.0.3",
         "cordova-plugin-device": "^2.0.2",
+        "cordova-plugin-inappbrowser": "3.0.0",
         "cordova-plugin-ionic-keyboard": "^2.1.3",
         "cordova-plugin-ionic-webview": "^2.2.0",
         "cordova-plugin-splashscreen": "^5.0.2",
         "cordova-plugin-statusbar": "^2.4.2",
         "cordova-plugin-whitelist": "^1.3.3",
         "cordova-promise-polyfill": "0.0.2",
-        "cordova-sqlite-evcore-extbuild-free": "0.9.9-rc1",
+        "cordova-sqlite-evcore-extbuild-free": "^0.9.9-rc1",
         "cordova-sqlite-storage-dependencies": "1.2.0",
         "ionic-angular": "3.9.2",
         "ionicons": "3.0.0",
@@ -59,12 +63,18 @@
             },
             "cordova-plugin-device": {},
             "cordova-plugin-ionic-keyboard": {},
-            "cordova-plugin-ionic-webview": {},
+            "cordova-plugin-ionic-webview": {
+                "ANDROID_SUPPORT_ANNOTATIONS_VERSION": "27.+"
+            },
             "cordova-plugin-splashscreen": {},
             "cordova-plugin-statusbar": {},
             "cordova-plugin-whitelist": {},
-            "cordova-sqlite-evcore-extbuild-free": {}
+            "cordova-sqlite-evcore-extbuild-free": {},
+            "cordova-plugin-inappbrowser": {},
+            "cordova-plugin-camera": {}
         },
-        "platforms": []
+        "platforms": [
+            "android"
+        ]
     }
 }

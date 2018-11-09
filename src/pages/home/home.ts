@@ -2,16 +2,15 @@ import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
 
 
-
-//import { HttpClient, HttpClientModule } from '@angular/common/http';
-//import 'rxjs/add/operator/map';
- 
-
 import { AdMobFree, AdMobFreeBannerConfig } from '@ionic-native/admob-free';
 
 import { AwriConnectProvider } from '../../providers/awri-connect/awri-connect';
+import { ViewPage } from '../../pages/view/view';
 
-
+import { SearchPage } from '../../pages/search/search';
+import { RegisterPage } from '../../pages/register/register';
+import { LoginPage } from '../../pages/login/login';
+import { Observable } from 'rxjs/Observable';
 
 const bannerConfig: AdMobFreeBannerConfig = {
   // add your config here
@@ -26,28 +25,22 @@ const bannerConfig: AdMobFreeBannerConfig = {
 })
 
 export class HomePage {
-private rootPage;
+rootPage:HomePage;
 
   text:any;  
   username: String;
-  items = [];
+  items: Observable<any>;
   awri: AwriConnectProvider;
+  color:String;
+
   constructor(public navCtrl: NavController,private admobFree: AdMobFree, awri: AwriConnectProvider) {
-    this.rootPage = HomePage;
-
-
-    console.log("HOMEPAGE");
+    this.rootPage = <any>HomePage;
     this.awri=awri;
- 
-//http.get()
-this.items=awri.getItems();
-//this.username=<String>awri.username;
-//this.username=;
-   //console.log(this.settingsPage);
-  //awri.connect();
 
-  
-    this.admobFree.banner.config(bannerConfig);
+//Suche persistent
+  this.items=<any>awri.getItems();
+
+  this.admobFree.banner.config(bannerConfig);
 
     this.admobFree.banner.prepare()
       .then(() => {
@@ -55,27 +48,33 @@ this.items=awri.getItems();
         // if we set autoShow to false, then we will need to call the show method here
         console.log("BannerConfig");
       })
-      .catch(e => console.log(e));
+      .catch(e => console.log(e));    
+  }
+
+
+
+  gotoLogin():void{
+      this.navCtrl.push(LoginPage)
+  }
     
-  }
-  gotoSettings():void{
-  //this.navCtrl.push('SettingsPage')
-  }
 
   dosearch():void{
-console.log(this.text);
 
 this.awri.search(this.text).then(data=>{
-  this.items=<any[]>data;
-  console.log(this.items);
+  this.items=<any>data;
+//  console.log(this.items);
+},err=>{
+
+  this.awri.showError("Die Suche nach '"+this.text+"' brachte leider keine Ergebnisse...");
 });
 //this.items=this.awri.getItems();
-
     }
   
+
     itemSelected(item:any):void{
       console.log(item);
-      alert(item.node.nid);
+      this.navCtrl.push(ViewPage, { item: item });
+      //alert(item.node.nid);
       }
 
       ionViewWillEnter() {
@@ -88,5 +87,27 @@ this.awri.search(this.text).then(data=>{
   openPage(p){
     this.rootPage=p;
   }
+
+  gotoSearch(){
+    this.navCtrl.push(SearchPage)
+  }
+  
+
+  gotoRegister(){
+    this.navCtrl.push(RegisterPage)
+  }
+
+  getColor(){
+    this.awri.get('color').then(data=>{
+      this.color=data;
+    })
+  }
+
+
+  setColor(color){
+    this.color=color;
+    this.awri.set('color',color);
+    }
+
 
 }

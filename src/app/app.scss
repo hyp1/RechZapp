@@ -27,3 +27,36 @@
     src: local("Arial");
     unicode-range: U+0000-00FF;
 }
+
+split-pane-side {
+    border-right: 0px !important;
+ }
+ 
+ .menu-container {
+    background-color: color($colors, secondary);
+ }
+ 
+ .transparent {
+    background: transparent;
+ }
+ 
+ .list-item {
+    color: #ffffff;
+    margin-bottom: 10px;
+    font-size: 2rem;
+ }
+ 
+ :hover.list-item {
+    background: #2e8015;
+ }
+ 
+ .scroll-content{
+    overflow: hidden;
+    margin-right: -17px;
+    overflow-y: scroll;
+ }
+ .true{
+//     background-color: darken(color($colors, secondary),20%);
+background-color: #2e8015;
+     
+ }

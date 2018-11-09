@@ -14,7 +14,7 @@
     "target": "es5"
   },
   "include": [
-    "src/**/*.ts", "../devdacticResponsive/src/pages/search/search.ts"
+    "src/**/*.ts", "../devdacticResponsive/src/pages/search/search.ts", "www/TodoCtrl.js", "src/assets/js/webmedia.js"
   ],
   "exclude": [
     "node_modules",

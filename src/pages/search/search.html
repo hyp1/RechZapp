@@ -2,43 +2,63 @@
 
     <ion-navbar>
         <ion-buttons start>
-          <button ion-button menuToggle>
-            <ion-icon name="menu"></ion-icon>
-          </button>
-          </ion-buttons>
-          
-              <ion-title>
-                Suchen
+            <button ion-button menuToggle>
+              <ion-icon name="menu"></ion-icon>
+            </button>
+            </ion-buttons>
+             
+            <ion-title>
+                Suchen 
               </ion-title>
-        <ion-buttons end>
-            <button ion-button (click)="this.awri.getInfo()">
-               {{this.awri.username}}
+      <ion-buttons end>
+  <ng-template [ngIf]="this.awri.isInRole('authenticated user')" [ngIfElse]="headerOut">
+              <button ion-button (click)="gotoLogin()">
+                  <img class="avatar" src="{{this.awri.userpic}}"> {{awri.username}}        
+                </button>
+  </ng-template>      
+  <ng-template #headerOut>
+              <button ion-button (click)="gotoLogin()">
+              <ion-icon name="contact"></ion-icon>  {{awri.username}}
               </button>
-      
-        </ion-buttons>
-    </ion-navbar> 
-    
-  </ion-header>
-  
-<ion-content padding>
+  </ng-template>
+      </ion-buttons>    
+    </ion-navbar>
 
- <ion-grid>
+</ion-header>
+  
+
+<ion-content padding>
+  <ion-list>
+    <ion-item>
+      <ion-label> <ion-icon name="search"></ion-icon></ion-label>
+      <ion-input  [(ngModel)]="text" placeholder="Rechtsfrage suchen..." clearInput></ion-input>
+    </ion-item>
+    </ion-list>    
+    <button ion-button round full (click)="dosearch()" icon-start><ion-icon name="search"  item-left></ion-icon> Suchen</button>
+  <ion-grid>
    <ion-row>
-     <ion-col *ngFor="let item of items | async" col-12 col-md-4>
-       <ion-card>
-         <ion-item>
+     <ion-col *ngFor="let item of items" col-12 col-md-4>
+       <ion-card  (click)="this.itemSelected(item)">
+         <ion-item>        
+          <ng-template [ngIf]="awri.isInRole('authenticated user')" [ngIfElse]="loggedOut">
            <ion-avatar item-start>
               <img class="avatar" src="https://graph.facebook.com/{{item.node?.field_fbid.und[0].value}}/picture"> 
+              <h2 text-capitalize>{{item.node?.field_fbname.und[0].value}}</h2>
             </ion-avatar>
-           <h2 text-capitalize>{{item.node?.field_fbname.und[0].value}} {{item.node?.field_fbid.und[0].value}}</h2>
+            
+          </ng-template>
+          <ng-template #loggedOut>
+              <ion-avatar item-start>
+                  <img class="avatar" src="assets/imgs/anonymous.png"> 
+                </ion-avatar>
+                <h2 text-capitalize>Nicht angezeigt</h2>
+            </ng-template>
          </ion-item>
          <ion-card-content>
 
                   <h2 innerHTML={{item.snippet}}></h2> 
-                  <p>{{ item.node?.nid }}</p>
                   <p> {{item.extra?.comment}}</p> 
-                  <p>Suchwert {{item.score}}<p> 
-     
+                  <p>Suchrelevanz {{item.score}}<p>      
          </ion-card-content>
        </ion-card>
      </ion-col>
@@ -46,13 +66,13 @@
  </ion-grid>
 
  <ion-fab right bottom class="web-fab">
-    <button ion-fab icon-only color="primary" (click)="checkPlatform()">
+    <button ion-fab icon-only color="primary" (click)="this.awri.checkPlatform()">
       <ion-icon name="help"></ion-icon>
     </button>
    </ion-fab>
    
    <ion-fab right top edge class="mobile-fab">
-    <button ion-fab icon-only color="secondary" (click)="checkPlatform()">
+    <button ion-fab icon-only color="secondary" (click)="this.awri.checkPlatform()">
       <ion-icon name="help"></ion-icon>
     </button>
    </ion-fab>

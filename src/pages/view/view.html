@@ -1,0 +1,67 @@
+<ion-header>
+
+  <ion-navbar>
+      <ion-buttons start>
+          <button ion-button menuToggle>
+            <ion-icon name="menu"></ion-icon>
+          </button>
+          </ion-buttons>
+           
+          <ion-title>
+              Details 
+            </ion-title>
+    <ion-buttons end>
+<ng-template [ngIf]="this.awri.isInRole('authenticated user')" [ngIfElse]="headerOut">
+            <button ion-button (click)="this.gotoLogin()">
+                <img class="avatar" src="{{this.awri.userpic}}"> {{awri.username}}        
+              </button>
+</ng-template>      
+<ng-template #headerOut>
+            <button ion-button (click)="this.gotoLogin()">
+            <ion-icon name="contact"></ion-icon>  {{awri.username}}
+            </button>
+</ng-template>
+    </ion-buttons>    
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+    <ion-card>
+        <ion-item>
+            <ng-template [ngIf]="awri.isInRole('authenticated user')" [ngIfElse]="loggedOut">
+                <ion-avatar item-start>
+                   <img class="avatar" src="https://graph.facebook.com/{{item.node?.field_fbid.und[0].value}}/picture"> 
+                 </ion-avatar>
+                 <h2 text-capitalize>{{item.node?.field_fbname.und[0].value}} <ng-template [ngIf]="awri.isAdmin()">           <a href="https://facebook.com/{{item.node?.field_fbid.und[0].value}}" target="new"><ion-icon name="contact"></ion-icon></a>
+                    </ng-template></h2>
+                 <a href="https://facebook.com/{{item.node.field_fbmid.und[0].value}}" target="new"><ion-icon name="logo-facebook"></ion-icon></a>
+                 <a href="{{this.awri.HOST}}/node/{{item.node.nid}}" target="new"> <ion-icon name="link"></ion-icon></a>     
+                </ng-template>
+               <ng-template #loggedOut>
+                   <ion-avatar item-start>
+                       <img class="avatar" src="assets/imgs/anonymous.png"> 
+                     </ion-avatar>
+                     <h2 text-capitalize>Nicht angezeigt</h2>
+                 </ng-template>
+          </ion-item>
+
+        <ion-item text-wrap>
+            <h3><span innerHTML="{{item.node.body['und'][0].safe_value}}"></span></h3>
+        </ion-item>
+
+        </ion-card>
+
+<p *ngFor="let comment of comments | async">
+  <ion-card>
+    <ion-item text-wrap>
+        <p><strong>{{comment.subject}}</strong></p>  <span innerHTML="{{comment.comment_body['und'][0].safe_value}}"></span> 
+      </ion-item>
+  </ion-card>
+</p>
+<button ion-button icon-only (click)="this.goBack()">
+    <ion-icon name="arrow-back"></ion-icon>
+</button>
+
+</ion-content>
