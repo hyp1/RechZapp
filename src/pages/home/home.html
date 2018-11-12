@@ -11,14 +11,15 @@
                 Home 
               </ion-title>
       <ion-buttons end>
+     
   <ng-template [ngIf]="this.awri.isInRole('authenticated user')" [ngIfElse]="headerOut">
-              <button ion-button (click)="gotoLogin()">
-                  <img class="avatar" src="{{this.awri.userpic}}"> {{awri.username}}        
-                </button>
+    <button ion-button (click)="gotoLogin()">
+      <img class="avatar" src="{{this.awri.user.picture}}"> {{awri.user.name}}        
+    </button>
   </ng-template>      
   <ng-template #headerOut>
               <button ion-button (click)="gotoLogin()">
-              <ion-icon name="contact"></ion-icon>  {{awri.username}}
+              <ion-icon name="contact"></ion-icon>  {{awri.user.name}}
               </button>
   </ng-template>
       </ion-buttons>    
@@ -42,7 +43,8 @@
             </ion-item>
             </ion-list>
             <button ion-button round full (click)="dosearch()" icon-start><ion-icon name="search" item-right></ion-icon>  Suchen </button>
-      
+            <ion-label color="danger" text-wrap><h3>{{error}}</h3></ion-label>
+  
             <ion-grid>
               <ion-row>
                 <ion-col *ngFor="let item of items" col-12 col-md-4>
@@ -52,6 +54,7 @@
                       <ion-avatar item-start>
                          <img class="avatar" src="https://graph.facebook.com/{{item.node?.field_fbid.und[0].value}}/picture"> 
                          <h2 text-capitalize>{{item.node?.field_fbname.und[0].value}}</h2>
+                         <p>{{item.node.created*1000 | date: 'dd.MM.yyyy H:mm' }}</p>
                        </ion-avatar>
                        
                      </ng-template>
@@ -68,18 +71,33 @@
                              <p> {{item.extra?.comment}}</p> 
                              <p>Suchrelevanz {{item.score}}<p>      
                     </ion-card-content>
-                  </ion-card>
-                </ion-col>
+                  </ion-card>              
+                </ion-col>       
               </ion-row>
+              <ion-row><ion-col>
+                <button ion-button *ngIf="this.items" (click)="this.resetSearch()">Reset</button>
+              </ion-col></ion-row>
             </ion-grid>     
       
-            <ion-label color="danger" text-wrap>Wir haben unser System erneuert, die gewohnte AWRI Seite finden Sie nun hier: <a href="https://stage.awri.ch" target="_new">https://stage.awri.ch</a></ion-label>
+            <ion-label color="danger" text-wrap><h3>Wir haben unser System erneuert, die gewohnte AWRI Seite finden Sie nun hier: <a href="https://stage.awri.ch" target="_new">https://stage.awri.ch</a></h3></ion-label>
 
             <div class="mobile-fab"><ion-label color="primary" text-wrap>Bitte noch etwas Geduld, weitere Updates folgen in Kürze... </ion-label></div>
 
+            <div id="scrollTop"></div>
+            
+            <ion-list *ngFor="let n of this.index">
+              <ion-card>  
+                <ion-item><p>{{n.created*1000 | date: 'dd.MM.yyyy H:mm' }} <ion-icon name="eye" (click)="this.frageSelected(n)" color="primary"></ion-icon></p></ion-item>
+                <ion-card-content text-wrap (click)="this.frageSelected(n)">{{n.title}}</ion-card-content>
+              </ion-card>
+              </ion-list>
+              <ion-infinite-scroll (ionInfinite)="doInfinite($event)">
+                  <ion-infinite-scroll-content></ion-infinite-scroll-content>
+                </ion-infinite-scroll>
+
             <ion-fab right bottom class="web-fab">
-                <button ion-fab icon-only color="primary" (click)="this.awri.checkPlatform()">
-                  <ion-icon name="help"></ion-icon>
+                <button ion-fab icon-only color="primary" (click)="scrollTo('scrollTop')">
+                    <ion-icon name="arrow-round-up"></ion-icon>
                 </button>
                 <ion-fab-list side="top">
                   <button ion-fab>Facebook</button>
@@ -92,8 +110,8 @@
                </ion-fab>
                
                <ion-fab right top edge class="mobile-fab">
-                <button ion-fab icon-only color="primary" (click)="this.awri.checkPlatform()">
-                  <ion-icon name="help"></ion-icon>
+                <button ion-fab icon-only color="primary" (click)="scrollToTop()">
+                    <ion-icon name="arrow-round-up"></ion-icon>
                 </button>
                </ion-fab>
 
@@ -101,6 +119,6 @@
   
   <ion-footer>
     <ion-toolbar>
-      <ion-title>Powered by <a href="{{this.awri.HOST}}" target="_BLANK">AWRI</a></ion-title>
+      <ion-title>Powered by <a href="{{this.awri.HOST}}" target="_BLANK">AWRI</a> <small>{{this.awri.stats?.nodesc}} Rechtsfragen</small></ion-title>
     </ion-toolbar>
   </ion-footer>

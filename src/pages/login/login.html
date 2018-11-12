@@ -13,12 +13,12 @@
       <ion-buttons end>
   <ng-template [ngIf]="this.awri.isInRole('authenticated user')" [ngIfElse]="headerOut">
               <button ion-button>
-                  <img class="avatar" src="{{this.awri.userpic}}"> {{awri.username}}        
+                  <img class="avatar" src="{{this.awri.user.picture}}"> {{awri.user.name}}        
                 </button>
   </ng-template>      
   <ng-template #headerOut>
               <button ion-button>
-              <ion-icon name="contact"></ion-icon>  {{awri.username}}
+              <ion-icon name="contact"></ion-icon>  {{awri.user.name}}
               </button>
   </ng-template>
       </ion-buttons>    
@@ -28,13 +28,13 @@
 
 
 <ion-content padding>
-
   <ng-template [ngIf]="this.awri.isInRole('authenticated user')" [ngIfElse]="loggedOut">
       <ion-item>
           <ion-label>{{awri.HOST}}</ion-label>        
         </ion-item>
     <ion-item>
-          <ion-label>Sie sind als [{{awri.uid}}] {{awri.username}} angemeldet</ion-label>        
+        
+          <ion-label>Sie sind als {{awri.user.name}} angemeldet</ion-label>        
         </ion-item>
           <button ion-button round lightgray full  (click)="this.awri.logout()">Abmelden</button>
 
@@ -60,11 +60,15 @@
             <div *ngIf="error" class="alert alert-danger">{{error}}</div>
             <button ion-button class="submit-btn" full round type="submit"
                     [disabled]="!loginForm.form.valid">Anmelden
-            </button>   
-            <button ion-button round lightgray full  (click)="dofblogin()"> <ion-icon name="logo-facebook"></ion-icon>Facebook</button>     
-            <button ion-button round lightgray full  (click)="gotoRegister()">Registrieren</button>         
+            </button> 
           </ion-col>
         </ion-row>    
-      </form>
+          </form>  
+            
+          <button ion-button round  full  (click)="fblogin()"> <ion-icon name="logo-facebook"></ion-icon>Facebook</button>               
+          <button ion-button round  full  (click)="gotoRegister()">Registrieren</button>         
+    
+      
+      <ion-label color="danger"><a ion-link  href="{{this.awri.HOST}}/user/password" target="_BLANK">Passwort vergessen?</a></ion-label>
     </ng-template>
 </ion-content>

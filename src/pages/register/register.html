@@ -1,12 +1,34 @@
 <ion-header>
-  <ion-navbar>
-    <ion-title>Registrieren</ion-title>
-  </ion-navbar>
+
+    <ion-navbar>
+        <ion-buttons start>
+            <button ion-button menuToggle>
+              <ion-icon name="menu"></ion-icon>
+            </button>
+            </ion-buttons>
+             
+            <ion-title>
+                Anmelden 
+              </ion-title>
+      <ion-buttons end>
+  <ng-template [ngIf]="this.awri.isInRole('authenticated user')" [ngIfElse]="headerOut">
+              <button ion-button>
+                  <img class="avatar" src="{{this.awri.user.picture}}"> {{awri.user.name}}        
+                </button>
+  </ng-template>      
+  <ng-template #headerOut>
+              <button ion-button>
+              <ion-icon name="contact"></ion-icon>  {{awri.user.name}}
+              </button>
+  </ng-template>
+      </ion-buttons>    
+    </ion-navbar>
+
 </ion-header>
 
 
 <ion-content padding>
-    <form #registerForm="ngForm" (ngSubmit)="register()" autocomplete="off">
+    <form #registerForm="ngForm" (ngSubmit)="registerUser()" autocomplete="off">
         <ion-row>
           <ion-col>
             <ion-list inset>
@@ -29,10 +51,11 @@
           <ion-col>
             <div *ngIf="error" class="alert alert-danger">{{error}}</div>
             <button ion-button round full class="submit-btn" type="submit"
-                    [disabled]="!registerForm.form.valid">Registrieren
+                    [disabled]="!registerForm.form.valid">Profil erstellen
             </button>        
-            <button ion-button round full (click)="this.awri.fblogin()"> <ion-icon name="logo-facebook"></ion-icon>Facebook</button>     
-          </ion-col>
+            </ion-col>
         </ion-row>        
       </form>
+      <button ion-button round full (click)="fblogin()"> <ion-icon name="logo-facebook"></ion-icon>Facebook</button>     
+ 
 </ion-content>

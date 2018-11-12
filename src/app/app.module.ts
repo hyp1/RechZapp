@@ -19,10 +19,14 @@ import { ViewPage } from '../pages/view/view';
 import { RegisterPage } from '../pages/register/register';
 import { LoginPage } from '../pages/login/login';
 import { CreatePage } from '../pages/create/create';
+import { HelpPage } from '../pages/help/help';
 
 import { Camera} from '@ionic-native/camera';
 
 import { UploadComponent } from '../components/upload/upload';
+import { FragenProvider } from '../providers/fragen/fragen';
+
+
 
 
 @NgModule({
@@ -35,9 +39,11 @@ import { UploadComponent } from '../components/upload/upload';
     RegisterPage,
     CreatePage,
     LoginPage,
+    HelpPage,
     UploadComponent
   ],
   
+
   imports: [
     BrowserModule,
     IonicModule.forRoot(MyApp),
@@ -55,6 +61,7 @@ import { UploadComponent } from '../components/upload/upload';
     RegisterPage,
     CreatePage,
     LoginPage,
+    HelpPage
   ],
 
   providers: [
@@ -64,7 +71,8 @@ import { UploadComponent } from '../components/upload/upload';
     Camera,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     AwriConnectProvider,
-    UploadComponent
+    UploadComponent,
+    FragenProvider
   ]
 })
 

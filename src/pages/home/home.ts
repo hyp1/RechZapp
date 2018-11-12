@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component,ViewChild } from '@angular/core';
+import { Content } from 'ionic-angular';
 import { NavController } from 'ionic-angular';
 
 
@@ -25,18 +26,26 @@ const bannerConfig: AdMobFreeBannerConfig = {
 })
 
 export class HomePage {
+  @ViewChild(Content) content: Content;
 rootPage:HomePage;
-
+  error:String;
   text:any;  
   username: String;
   items: Observable<any>;
   awri: AwriConnectProvider;
-  color:String;
-
+index:Array<any>;
+pages:number;
+page:number;
+scrollingTop:boolean;
   constructor(public navCtrl: NavController,private admobFree: AdMobFree, awri: AwriConnectProvider) {
+    this.error="";
     this.rootPage = <any>HomePage;
     this.awri=awri;
+    this.page=0;
+    this.pages=10;
+    this.index=[];
 
+this.getFragen();
 //Suche persistent
   this.items=<any>awri.getItems();
 
@@ -50,38 +59,34 @@ rootPage:HomePage;
       })
       .catch(e => console.log(e));    
   }
-
-
-
   gotoLogin():void{
       this.navCtrl.push(LoginPage)
-  }
-    
+  }    
+
 
   dosearch():void{
-
-this.awri.search(this.text).then(data=>{
-  this.items=<any>data;
-//  console.log(this.items);
-},err=>{
-
-  this.awri.showError("Die Suche nach '"+this.text+"' brachte leider keine Ergebnisse...");
-});
-//this.items=this.awri.getItems();
-    }
+    this.error="";
+    this.awri.search(this.text).then(data=>{
+        this.items=<any>data;
+      //  console.log(this.items);
+    },err=>{
+        this.error="Die Suche nach '"+this.text+"' brachte leider keine Ergebnisse...";
+        //  this.awri.showError("Die Suche nach '"+this.text+"' brachte leider keine Ergebnisse...");
+    });
+  }
   
+  resetSearch(){
+    this.awri.resetSearch();
+    this.items=null;
+  };
+
 
     itemSelected(item:any):void{
-      console.log(item);
       this.navCtrl.push(ViewPage, { item: item });
-      //alert(item.node.nid);
-      }
+    }
 
-      ionViewWillEnter() {
-
-    //this.username=this.awri.username;
+  ionViewWillEnter() {
     this.username=this.awri.getName();
-    console.log('ionViewWillEnter HOME'+this.username);
   }
 
   openPage(p){
@@ -97,17 +102,72 @@ this.awri.search(this.text).then(data=>{
     this.navCtrl.push(RegisterPage)
   }
 
-  getColor(){
-    this.awri.get('color').then(data=>{
-      this.color=data;
+
+  scrollTo(element:string) {
+
+    let yOffset = document.getElementById(element).offsetTop;
+this.content.scrollTo(0, yOffset, 4000).then(data=>{
+  console.log(data);
+},err=>{
+  console.log(err);
+});
+  }
+
+  scrollToTop(): void {
+    if (!this.scrollingTop) {
+      this.scrollingTop = true;
+      try {
+        let yOffset = document.getElementById('scrollTop').offsetTop;
+        this.content.scrollTo(0, yOffset, 4000)
+          .then(res => this.scrollingTop = false)
+          .catch(err => console.log(err)); // show log in dev env
+      } catch (e) {
+        this.scrollingTop = false
+        console.log(e);
+      //  this.logService.warn(e); // show log in dev env
+      }
+    }
+  }
+  
+  getFragen(){
+    this.awri.getFragenIndex(this.page,this.pages).then(index=>{
+      let dat:any=index;
+      for(var i=0;i<this.pages;i++)
+          this.index.push(dat[i]);
+      //console.log(this.index);
+      this.page++;
+    },err=>{
+      console.log(err);
     })
   }
 
+ frageSelected(n:any):void{
+   //console.log(n)
+   this.awri.getFrage(n.nid).then(res=>{
+    let item:any=res;
+   //  console.log(item);
+    this.navCtrl.push(ViewPage, { item: {node:JSON.parse(item)} });
+   });
+  }
 
-  setColor(color){
-    this.color=color;
-    this.awri.set('color',color);
-    }
+  
+  doInfinite(infiniteScroll) {
+ //   console.log('Begin async operation');
+  
+    setTimeout(() => {
+      /*
+      for (let i = 0; i < 30; i++) {
+        this.index.push( this.index.length );
+      }
+  */
+  this.getFragen();
+ //     console.log('Async operation has ended');
+      infiniteScroll.complete();
+    }, 500);
+  }
 
+  eventHandler(event){
 
+    console.log(event);
+  }
 }

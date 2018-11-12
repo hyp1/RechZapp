@@ -9,7 +9,7 @@ function scriptTest(){
 //Browser File Select
 function webpreviewFile(filefield,previewid){
     return new Promise((resolve,reject)=>{
-    console.log(filefield);
+   // console.log(filefield);
 if(typeof filefield.files!=='undefined'){
     var preview = document.querySelector(previewid); //selects the query named img
     var file    =filefield.files[0]; //sames as here

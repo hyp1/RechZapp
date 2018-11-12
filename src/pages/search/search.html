@@ -12,13 +12,13 @@
               </ion-title>
       <ion-buttons end>
   <ng-template [ngIf]="this.awri.isInRole('authenticated user')" [ngIfElse]="headerOut">
-              <button ion-button (click)="gotoLogin()">
-                  <img class="avatar" src="{{this.awri.userpic}}"> {{awri.username}}        
-                </button>
+    <button ion-button (click)="gotoLogin()">
+      <img class="avatar" src="{{this.awri.user.picture}}"> {{awri.user.name}}        
+    </button>
   </ng-template>      
   <ng-template #headerOut>
               <button ion-button (click)="gotoLogin()">
-              <ion-icon name="contact"></ion-icon>  {{awri.username}}
+              <ion-icon name="contact"></ion-icon>  {{awri.user.name}}
               </button>
   </ng-template>
       </ion-buttons>    
@@ -35,6 +35,7 @@
     </ion-item>
     </ion-list>    
     <button ion-button round full (click)="dosearch()" icon-start><ion-icon name="search"  item-left></ion-icon> Suchen</button>
+    <ion-label color="danger" text-wrap><h3>{{error}}</h3></ion-label>
   <ion-grid>
    <ion-row>
      <ion-col *ngFor="let item of items" col-12 col-md-4>
@@ -43,7 +44,9 @@
           <ng-template [ngIf]="awri.isInRole('authenticated user')" [ngIfElse]="loggedOut">
            <ion-avatar item-start>
               <img class="avatar" src="https://graph.facebook.com/{{item.node?.field_fbid.und[0].value}}/picture"> 
+              {{item.node.nid}}
               <h2 text-capitalize>{{item.node?.field_fbname.und[0].value}}</h2>
+              <p>{{item.node.created*1000 | date: 'dd.MM.yyyy H:mm' }}</p>
             </ion-avatar>
             
           </ng-template>

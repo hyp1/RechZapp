@@ -20,7 +20,10 @@ password:String;
 password2:String;
 awri:AwriConnectProvider
   constructor(public navCtrl: NavController, public navParams: NavParams,awri:AwriConnectProvider,alertCtrl:AlertController) {
-  this.awri=awri;
+    this.awri=awri;
+    this.username="";
+    this.email="";
+    this.password="";
   }
 
   
@@ -45,8 +48,15 @@ registerUser(){
  // console.log(this.password);
 }
  
-
-
-
+fblogin(){
+  this.awri.fblogin().then(data=>{
+  let dat:any=data;
+  console.log(data);
+    this.awri.fboauth(dat.authResponse.accessToken).then(res=>{
+      console.log(res);   
+      this.username=<String>this.awri.user.name;
+  });
+})
+};
 
 }

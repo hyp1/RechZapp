@@ -13,7 +13,7 @@
       <ion-buttons end>
   <ng-template [ngIf]="this.awri.isInRole('authenticated user')" [ngIfElse]="headerOut">
               <button ion-button (click)="this.gotoLogin()">
-                  <img class="avatar" src="{{this.awri.userpic}}"> {{awri.username}}        
+                  <img class="avatar" src="{{this.awri.user.picture}}"> {{awri.user.name}}        
                 </button>
   </ng-template>      
   <ng-template #headerOut>
@@ -30,16 +30,21 @@
 
 <ion-content padding>
  <ng-template [ngIf]="awri.isLoggedIn()" [ngIfElse]="loggedOut">
+     <ion-list>
     <ion-item>
         <ion-label color="secondary">Verbunden mit {{this.awri.HOST}}</ion-label>
      
       </ion-item>
       <ion-item>
-        <ion-label>Benutzername {{this.awri.username}}</ion-label> 
+        <ion-label>Benutzername {{this.awri.user.name}}</ion-label> 
+     </ion-item>  
+     <ion-item>
+        <ion-label>Rollen <span innerHTML="{{this.awri.user.roles | json}}"></span></ion-label> 
      </ion-item>  
      <button ion-button (click)="this.awri.clear()" color="danger">Einstellungen löschen</button>
-       
+    </ion-list>
 </ng-template>
+
 
 <ng-template #loggedOut>
     <ion-label color="danger"><h2><ion-img  src="assets/imgs/anonymous.png"></ion-img> Sie sind nicht angemeldet!</h2></ion-label>

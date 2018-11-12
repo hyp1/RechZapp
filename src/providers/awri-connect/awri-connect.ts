@@ -4,7 +4,7 @@ import { Platform } from 'ionic-angular/platform/platform';
 
 //import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
-import { AlertController } from 'ionic-angular';
+import { AlertController,LoadingController,Loading } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 
 
@@ -24,55 +24,76 @@ export interface User {
 declare var openFB;
 
 
+
 @Injectable()
 export class AwriConnectProvider {
+
+
 //public  HOST='http://kimo2007.dnshome.de:8888/stage.awri.ch'
+//public  HOST='http://localhost/stage.awri.ch'
+
 public  HOST='https://stage.awri.ch'
 
-public uid:Number;
-public username:String;
-public userpic:String;
-public roles:Array<String>;
+//public uid:Number;
+//public username:String;
+//public userpic:String;
+
 public session:String;
 public token:String;
 
-public fbid:Number;
+//public fbid:Number;
 public access_token:String;
 
 private items:Array<any>;
-/*
-public items: [{
-  id: string;
-  action: number;
-  points: number;
-  label: string;
-  link: string;
 
-}];
-*/
-  constructor(public http: HttpClient,public storage: Storage,private plt:Platform,private alertCtrl:AlertController) {
-    
-    this.uid=0;
-    this.username='Unbekannt';
-    this.userpic='assets/imgs/anonymous.png';
+//public roles:Array<any>;
+loading:Loading;
+stats:Array<any>;
 
-    this.roles=['anonymous user'];
+public user: {
+  uid: number;
+  name: string;
+  email: string;
+  picture: string;
+  roles: Array<any>;
+  created: number;
+  fbid: number;
+};
+
+  constructor(public http: HttpClient,public storage: Storage,private plt:Platform,private alertCtrl:AlertController,public loadingCtrl: LoadingController) {
+
+this.user={
+  uid:0,
+  name:'Unbekannt',
+  email:'',
+  picture:'assets/imgs/anonymous.png',
+  roles:[{0:'anonymous user'}],
+  created:Date.now(),
+  fbid:0
+};
+
+
+//    this.uid=0;
+//    this.username='Unbekannt';
+//    this.userpic='assets/imgs/anonymous.png';
+//    this.roles=[{0:'anonymous user'}];
     this.session=null;
     this.token=null;
     this.items=null;
     this.access_token=null;
     //openFB.init({appId:'126766317359254',scope:'email'});
     //console.log(openFB),
-    this.getUser().then(data=>{
-      console.log(data);
+    this.checkUser().then(data=>{
+  //    console.log(data);
+      this.getStats();
     },err=>{
       console.log(err);
     });
     
-    
-    console.log('Hello AwriConnectProvider Provider');
+
   }
   
+
   public set(settingName,value){
     return this.storage.set(`setting:${ settingName }`,value);
   }
@@ -85,25 +106,111 @@ public items: [{
   }
 
   public clear() {
-    this.storage.clear().then(() => {
-      console.log('all keys cleared');
+    let alert = this.alertCtrl.create({
+      title: 'Einstellungen löschen',
+      message: 'Möchten Sie Ihre gespeicherten Einstellungen wirklich löschen?',
+      cssClass:'danger',
+      buttons: [
+        {
+          text: 'Nein',
+          role: 'cancel',
+          handler: () => {
+            console.log('Nein clicked');
+          }
+        },
+        {
+          text: 'Ja',
+          handler: () => {
+            console.log('Ja clicked');
+            this.storage.clear().then(() => {
+              console.log('all keys cleared');
+            });
+          }
+        }
+      ]
     });
+    alert.present();
+  }
+
+  showLoading(text){
+    this.loading = this.loadingCtrl.create({
+      content: text
+    });
+    this.loading.present();
+  }
+  
+  hideLoading(){
+    this.loading.dismiss();
+  }
+
+  getImagePath(uri):String{
+    return uri.replace('public://attachments/',this.HOST+'/sites/default/files/attachments/');
+};
+
+
+  getStats(){
+    return new Promise(resolve=>{
+  //    let headers = new HttpHeaders()
+//      .set('Access-Control-Allow-Origin','*').set('Content-Type', 'application/json')
+  //    let options = {
+  //      headers: headers,
+
+//      };
+        this.http.post(this.HOST+'/stats.txt', null,{ responseType: 'text'})
+       // .map(res=>res)
+        .subscribe(data=>{
+          this.stats=<any>JSON.parse(data);
+          console.log(this.stats,"getStatus");
+        resolve(data);
+        });
+    })   
+  }
+  
+  getFragenIndex(page,pages){
+    return new Promise((resolve,reject)=>{
+        this.http.get(this.HOST+'/drupalgap/node.json?fields=nid,title,created,status&parameters[type]=rechtsfrage&parameters[status]=1&options[orderby][created]=desc&page='+page+'&pagesize='+pages)
+       // .map(res=>res)
+        .subscribe(data=>{
+   //       console.log(data);
+        resolve(data);
+        },err=>{
+          reject(err);
+        });
+    })   
   }
 
 
+  getFrage(nid){
+    return new Promise((resolve,reject)=>{
+     let headers = new HttpHeaders()
+      .set('X-CSRF-TOKEN',<string>this.token).set('Content-Type', 'application/json')
+     
+    let options = {
+      headers: headers,
+      withCredentials	: true,
+    };
+       this.http.post(this.HOST+'/?q=drupalgap/awri_services_resources/rechtsfrage',{nid:nid}, options).subscribe(data => {
+          resolve(data);    
+        },err=>{
+          reject(err);
+        });    
+  })
+   
+  }
 
 getComments(nid){
-  return new Promise(resolve=>{
-   this.http.get('https://awri.ch/drupalgap/comment.json?parameters[nid]='+nid+'&parameters[status]=1&pagesize=150').subscribe(data=>{
-resolve(data);
+  return new Promise((resolve,reject)=>{
+   this.http.get(this.HOST+'/drupalgap/comment.json?parameters[nid]='+nid+'&parameters[status]=1&pagesize=150').subscribe(data=>{
+    resolve(data);
+  },err=>{
+    reject(err);
   });
-  
 })
  
 }
 
   loadUser(uid){
-    return new Promise(resolve => {
+    return new Promise((resolve,reject) => {
     let headers = new HttpHeaders()
     .set('X-CSRF-TOKEN',<string>this.token).set('Content-Type', 'application/json')
     .set('Authentication', <string>this.session);
@@ -117,14 +224,15 @@ resolve(data);
   
     this.http.get(this.HOST+'/?q=drupalgap/user/'+uid+'.json', options).subscribe(data => {
  
-    resolve(data);
+      resolve(data);
+     },err=>{
+       reject(err);
      })
     })
     }
 
-
     
-  getUser() {
+  checkUser() {
     return new Promise((resolve, reject)  => {
       this.http.get(this.HOST+'/?q=services/session/token', { responseType: 'text', withCredentials:true }).map(res=>res).subscribe(data=> {
       this.token=data;
@@ -140,24 +248,25 @@ resolve(data);
       this.http.post(this.HOST+'/?q=drupalgap/system/connect.json',null,options).subscribe(data => {
       let dat:any=data;
      // this.user=dat.user;
-      this.uid=dat.user.uid;
-      this.roles=dat.user.roles;
+      this.user.uid=dat.user.uid;
+      this.user.roles=dat.user.roles;
       this.set('session_name',dat.session_name);
       this.set('sessid',dat.sessid);      
       this.session=dat.session_name+'='+dat.sessid;
-      if(this.uid>0){
-        this.username=dat.user.name;      
+      if(this.user.uid>0){
+        this.user.name=dat.user.name;      
+        this.user.email=dat.user.mail;      
      
-      this.loadUser(this.uid).then(data=>{
+      this.loadUser(this.user.uid).then(data=>{
         let vars:any=data;  
-        this.username=vars.name;
-        this.uid=vars.uid;
-        this.roles=vars.roles;        
-        if(this.uid>0){
+        this.user.name=vars.name;
+        this.user.uid=vars.uid;
+        this.user.roles=vars.roles;        
+        if(this.user.uid>0){
          // this.username=vars.user.name;
-          if(vars.picture) this.userpic=vars.picture.url;
-          if(vars.field_fbid['und'])this.fbid=vars.field_fbid['und'][0].value;
-          if(this.fbid)this.userpic="https://graph.facebook.com/"+this.fbid+"/picture"     
+          if(vars.field_fbid['und'])this.user.fbid=vars.field_fbid['und'][0].value;
+          if(this.user.fbid)this.user.picture="https://graph.facebook.com/"+this.user.fbid+"/picture"     
+          if(vars.picture) this.user.picture=vars.picture.url;
         }        
       });
     }
@@ -179,6 +288,8 @@ resolve(data);
       openFB.login(
         function(response) {
           if (response.status === 'connected') {
+
+
          resolve(response);          
           }
           else if (response.error) { 
@@ -211,11 +322,11 @@ return new Promise((resolve,reject) => {
       this.http.post(this.HOST+'/?q=drupalgap/user/register',user,options).map(res=>res).subscribe(data => {         
         console.log(data);
         let vars=<any>data;
-        this.uid=vars.uid;
+        this.user.uid=vars.uid;
         console.log(vars.uri);
-        console.log(this.uid);      
-        resolve(data)
-
+        console.log(this.user.uid);      
+      
+        this.checkUser();
       }, err => {
         reject(err);
       });      
@@ -228,13 +339,15 @@ return new Promise((resolve,reject) => {
 
 }
 
+
  fboauth(token:String){
   return new Promise((resolve,reject) => {
   let headers = new HttpHeaders()
   //.set('Content-Type', 'application/json')
   .set('X-CSRF-TOKEN', <string>this.token);  
   let options = {
-      headers: headers
+      headers: headers,
+      withCredentials: true 
   }; 
   let params ={
     access_token:token,
@@ -247,18 +360,19 @@ return new Promise((resolve,reject) => {
         this.token=vars.token;
         this.session=vars.session_name+'='+vars.sessid;
       //  this.user=vars.user;
-        this.uid=vars.user.uid;
-        this.roles=vars.user.roles;
-        this.username=vars.user.name;
-        if(vars.user.picture)this.userpic=vars.user.picture.url;
+        this.user.uid=vars.user.uid;
+        this.user.roles=vars.user.roles;
+        this.user.name=vars.user.name;
+        if(vars.user.picture)this.user.picture=vars.user.picture.url;
         
-        if(vars.user.field_fbid['und'])this.fbid=vars.user.field_fbid['und'][0].value;
-        if(this.fbid)this.userpic="https://graph.facebook.com/"+this.fbid+"/picture"
-        console.log(this.fbid,"FBID");
+        if(vars.user.field_fbid['und'])this.user.fbid=vars.user.field_fbid['und'][0].value;
+        if(this.user.fbid)this.user.picture="https://graph.facebook.com/"+this.user.fbid+"/picture"
+        console.log(this.user.fbid,"FBID");
      //   console.log(data.session_name+''+data.sessid);
-     //   console.log(this.uid);
+        console.log(this);
         resolve(data);
       }, err => {
+        console.log(err);
         reject(err);
       });      
  //     console.log(this.token);
@@ -295,25 +409,24 @@ return new Promise((resolve,reject) => {
           this.set('session_name',vars.session_name);
           this.set('sessid',vars.token);
 
-          this.uid=vars.user.uid;
-          this.roles=vars.user.roles;
-          if(this.uid>0){
-            this.username=vars.user.name;
-            if(vars.user.picture) this.userpic=vars.user.picture.url;
-            if(vars.user.field_fbid['und'])this.fbid=vars.user.field_fbid['und'][0].value;
-            if(this.fbid)this.userpic="https://graph.facebook.com/"+this.fbid+"/picture"
-            console.log(this.fbid,"FBID");
+          this.user.uid=vars.user.uid;
+          this.user.roles=vars.user.roles;
+          if(this.user.uid>0){
+            this.user.name=vars.user.name;
+     
+            if(vars.user.field_fbid['und'])this.user.fbid=vars.user.field_fbid['und'][0].value;
+            if(this.user.fbid)this.user.picture="https://graph.facebook.com/"+this.user.fbid+"/picture";
+            if(vars.user.picture) this.user.picture=vars.user.picture.url;
+            console.log(this.user.fbid,"FBID");
           }
             console.log(this.session);
-          console.log(this.uid);
+          console.log(this.user.uid);
           resolve(data);
         }, err => {
+          if(err.status==401)this.showError("Falscher Benutzername oder falsches Passwort!");
+          else this.showError("Anmeldung fehlgeschlagen:"+err.status);
           reject(err);
         });      
-        
-   //     console.log(this.token);
-
-
   });
 
   }
@@ -324,45 +437,24 @@ return new Promise((resolve,reject) => {
 
   connect(){
     return new Promise((resolve,reject) => {
-  const headers = new HttpHeaders()
-  .set('X-CSRF-TOKEN',<any>this.token)
-const options = {
-  headers: headers,
-  withCredentials: true
-};
-    
-  this.http.post(this.HOST+'/?q=drupalgap/system/connect',null,options).map(res=>res).subscribe(data => {         
-    console.log(data);
-    let vars=<any>data;
-    this.token=vars.token;
-    this.session=vars.session_name+'='+vars.sessid;
-    this.uid=vars.user.uid;
-   if(this.uid>0)this.username=vars.user.name;
- //   console.log(data.session_name+''+data.sessid);
- //   console.log(this.uid);
-    resolve(data);
-  }, err => {
-    reject(err);
-  });      
-  
-//});
-
-/*
-      //console.log(headers);
-        this.http.get('https://awri.ch/?q=services/session/token',options).subscribe(data => {
-         // let vars=<string>data;
-         // this.token=vars;
-      //    this.session=vars.session_name+'_'+vars.sessid;
-      //    this.uid=vars.user.uid,
-      //    this.username=vars.user.name,
-        console.log(data);
-        resolve(this);
-         // console.log(vars.session_name+'_'+vars.sessid);
-        
-        });
-        */
-      
-      });
+      const headers = new HttpHeaders()
+        .set('X-CSRF-TOKEN',<any>this.token)
+      const options = {
+        headers: headers,
+        withCredentials: true
+      };    
+        this.http.post(this.HOST+'/?q=drupalgap/system/connect',null,options).map(res=>res).subscribe(data => {         
+          console.log(data);
+          let vars=<any>data;
+          this.token=vars.token;
+          this.session=vars.session_name+'='+vars.sessid;
+          this.user.uid=vars.user.uid;
+          if(this.user.uid>0)this.user.name=vars.user.name;
+          resolve(data);
+        }, err => {
+          reject(err);
+      });            
+    });
   }
 /*
   search<items>(text:any){
@@ -381,6 +473,7 @@ const options = {
 
   search(text:String) {
     return new Promise((resolve,reject) => {
+      this.showLoading("Suche, Bitte warten...");
       const headers = new HttpHeaders()
       .set('X-CSRF-TOKEN',<any>this.token);    
     const options = {
@@ -391,10 +484,12 @@ const options = {
         this.items=<Array<any>>data;
      //   var view=this.data.view;      
       //  this.page=view.page;
-      //  this.pages=view.pages;  
+      //  this.pages=view.pages; 
+      this.hideLoading(); 
        resolve(this.items);
 
       }, err => {
+        this.hideLoading(); 
         reject(err);
       });
     });
@@ -439,13 +534,10 @@ getKantons(){
       headers: headers,
       withCredentials: true
     };
-  
-
-  //JSON.stringify(data);       
-  console.log(JSON.stringify(data));
+       
+ //console.log(JSON.stringify(data));
     this.http.post(this.HOST+'/connect/awri_fragen',JSON.stringify(data),options).subscribe(data=> {
-    resolve(data);  
-     
+    resolve(data);       
      },err=>{
        reject(err);
      })
@@ -466,29 +558,18 @@ let options:any = {
   withCredentials	: 'true',
 };
 
-  this.http.get(this.HOST+'/?q=drupalgap/user/'+this.uid+'.json', options).subscribe(data => {
+  this.http.get(this.HOST+'/?q=drupalgap/user/'+this.user.uid+'.json', options).subscribe(data => {
   let res:any=data;  
   console.log(res);
-  this.username=res.name;
+  this.user.name=res.name;
    //  resolve(data);
    })
  
-   
- // headers = new HttpHeaders()
- //  .set('X-CSRF-TOKEN',<string>this.token).set('Content-Type', 'application/json');
-   //set('Cookie', <string>this.session);
-  //  options = {
-  //  headers: headers,
-   // withCredentials	: 'true',
-  //};
 
 headers = new HttpHeaders()
   .set('X-CSRF-TOKEN',<string>this.token).set('Content-Type', 'application/json')
-  //.set('Authentication', <string>this.session);
-  //.set('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE')
- // .set('Access-Control-Allow-Headers', 'Content-Type,X-CSRF-TOKEN');
-
- options = {
+ 
+options = {
   headers: headers,
   withCredentials	: true,
 };
@@ -497,12 +578,7 @@ headers = new HttpHeaders()
     console.log(JSON.parse(res));
        resolve(data);    
     });
-
-
   });
-
-  
-
 }
  
 
@@ -539,9 +615,15 @@ withCredentials	: true,
 this.http.post(this.HOST+'/drupalgap/user/logout.json',null,options).subscribe(data => {
       console.log(data);
      // let res:any=data;
-      this.uid=0;
-      this.username='Unbekannt';
-      this.roles=['anonymous user'];   
+     this.user={
+      uid:0,
+      name:'Unbekannt',
+      email:'',
+      picture:'assets/imgs/anonymous.png',
+      roles:[{0:'anonymous user'}],
+      created:Date.now(),
+      fbid:0
+    }; 
       console.log(data);
       resolve(data);
     }, err => {
@@ -568,12 +650,37 @@ uploadFile(filedata){
 });
 }
 
+resetPassword(){
+  return new Promise((resolve,reject) => {
+    const headers = new HttpHeaders()
+    .set('X-CSRF-TOKEN',<any>this.token).set('Content-Type', 'application/json')
+    const options = {
+    headers: headers,
+    withCredentials	: true,
+    };
+    this.http.get(this.HOST+'/drupalgap/user/password',options).subscribe(data => {
+      console.log(data);
+  
+      resolve(data);
+    }, err => {
+      reject(err);
+    });
+  });
+}
+
+
+resetSearch(){
+  //alert("reset");
+  this.items=null;
+ // console.log(this.items);
+
+}
   getItems(){
     return this.items;
   }
   
   getName(){
-    return this.username;
+    return this.user.name;
   }
 
   getInfo(){
@@ -582,7 +689,7 @@ uploadFile(filedata){
 
 
   isLoggedIn(){
-    if(this.uid>0)return true;
+    if(this.user.uid>0)return true;
     else return false;
   }
 
@@ -594,9 +701,9 @@ isBrowser(){
 
 isAdmin(){
 let ret=false;
-  let obj=this.roles;
+  let obj=this.user.roles;
     Object.keys(obj).forEach(function(key,index) {
-      if(obj[key]=='administrator')ret=true;
+      if(obj[key]=='administrator'||obj[key]=='moderator')ret=true;
       // key: the name of the object key
       // index: the ordinal position of the key within the object 
   });
@@ -605,7 +712,7 @@ return ret;
 
   isInRole(role){
     let ret=false;
-    let obj=this.roles;
+    let obj=this.user.roles;
       Object.keys(obj).forEach(function(key) {
         if(obj[key]===role)ret=true;
     });

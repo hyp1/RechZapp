@@ -15,7 +15,6 @@ export class LoginPage {
   awri:AwriConnectProvider;
   constructor(public navCtrl: NavController, public navParams: NavParams,awri:AwriConnectProvider) {
     this.awri=awri;
-    this.username=this.awri.username;
   }
 
   ionViewDidLoad() {
@@ -24,28 +23,36 @@ export class LoginPage {
 
   login(){
     //alert('username: ' + this.username);
-    this.awri.login(this.username,this.password).then(data=>{
-      
-      let res=<any>data
-      this.username=<String>this.awri.username;
-     if(res.username)this.username=<String>res.username;
-
-     //this.awri.showInfo("Sie sind nun als "++"");
+    this.awri.login(this.username,this.password).then(data=>{      
     }).catch(err=>{
-//        console.log(err);
-        this.awri.showError(err);
-    });
-    
-   // console.log(this.mylblRef.nativeElement.innerText);
-  //  this.username="Bert"
+      this.username="";
+      this.password="";
+        console.log(err);
+    });    
   }
 
   gotoRegister(){
     this.navCtrl.push(RegisterPage);
   }
 
-  sendPassword(){
-
-  }
   
+  fblogin(){
+    this.awri.fblogin().then(data=>{
+    let dat:any=data;
+    console.log(data);
+      this.awri.fboauth(dat.authResponse.accessToken).then(res=>{
+//        this.username=<String>this.awri.username;
+        console.log(res);   
+      });
+    })
+  };
+
+logout(){
+  this.awri.logout().then(data=>{      
+    console.log(data);
+  }).catch(err=>{
+      console.log(err);
+  });   
+};
+
 }

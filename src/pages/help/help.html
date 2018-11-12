@@ -1,0 +1,63 @@
+<ion-header>
+
+  <ion-navbar>
+      <ion-buttons start>
+          <button ion-button menuToggle>
+            <ion-icon name="menu"></ion-icon>
+          </button>
+          </ion-buttons>
+           
+          <ion-title>
+              Hilfe 
+            </ion-title>
+    <ion-buttons end>
+<ng-template [ngIf]="this.awri.isInRole('authenticated user')" [ngIfElse]="headerOut">
+            <button ion-button (click)="this.gotoLogin()">
+                <img class="avatar" src="{{this.awri.user.picture}}"> {{awri.user.name}}        
+              </button>
+</ng-template>      
+<ng-template #headerOut>
+            <button ion-button (click)="this.gotoLogin()">
+            <ion-icon name="contact"></ion-icon>  {{awri.username}}
+            </button>
+</ng-template>
+    </ion-buttons>    
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  
+    <ion-grid>
+        <ion-row>
+          <ion-col col-12 col-md>
+            <ion-card>
+              <ion-card-header><h2>Sie suchen die alte AWRI Seite?</h2></ion-card-header>
+              <ion-card-content><a href="https://stage.awri.ch" target="_BLANK">https://stage.awri.ch</a></ion-card-content>
+            </ion-card>
+          </ion-col>
+          <ion-col col-12 col-md>
+              <ion-card>
+              <ion-card-header><h2>Hinweise zum Datenschutz:</h2></ion-card-header>
+              <ion-card-content><a href="https://stage.awri.ch/agb" target="_BLANK">https://stage.awri.ch/agb</a></ion-card-content>
+            </ion-card>
+          </ion-col>
+        </ion-row>
+          <ion-row>
+          <ion-col col-12 col-md>
+              <ion-card>
+              <ion-card-header><h2>Wer beantwortet die Fragen?</h2></ion-card-header>
+              <ion-card-content><p>Die Mitglieder der Facebookgruppe <a href="https://www.facebook.com/groups/RechtsberatungSchweiz/" target="_BLANK">Rechtsforum Schweiz</a></p></ion-card-content>
+        </ion-card>
+      </ion-col>
+        <ion-col col-12 col-md>
+            <ion-card>
+                <ion-card-header><h2></h2></ion-card-header>
+                <ion-card-content><p>4 von 4<a href="https://www.facebook.com/groups/RechtsberatungSchweiz/" target="_BLANK">Rechtsforum Schweiz</a></p></ion-card-content>
+          </ion-card>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+       
+</ion-content>

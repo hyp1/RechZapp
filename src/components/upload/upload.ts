@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { AwriConnectProvider } from '../../providers/awri-connect/awri-connect';
 import { Camera, CameraOptions } from '@ionic-native/camera';
-
 /**
   webmedia.js WebRTC Video adapter.js
  https://github.com/webrtc/adapter
@@ -32,7 +31,7 @@ export class UploadComponent {
     this.files = [];
     for(var i=0;i<this.MAX_UPLOADS;i++)this.files.push({fid:-1,name:'',src:''});
   }
-
+  
   nativeSelectFile(){
     const options: CameraOptions = {
       quality: 100,
@@ -42,13 +41,11 @@ export class UploadComponent {
       mediaType: this.camera.MediaType.PICTURE
     }    
     this.camera.getPicture(options).then((imageData) => {
-     // imageData is either a base64 encoded string or a file URI
-     // If it's base64 (DATA_URL):
       let base64Image = 'data:image/jpeg;base64,' + imageData;
       let id=this.getImageID();
       this.files[id].fid=-1;
       this.files[id].src=base64Image;
-      this.files[id].name=this.awri.uid+"-nativecam-"+Date.now()+".jpg";
+      this.files[id].name=this.awri.user.uid+"-nativecam-"+Date.now()+".jpg";
       let input:any = document.getElementById('image'+id); 
       input.name = this.files[id].name;    
       input.src=this.files[id].src;
@@ -59,6 +56,8 @@ export class UploadComponent {
     });
   }
 
+
+  
   nativeCamera(){
     const options: CameraOptions = {
       quality: 100,
@@ -74,7 +73,7 @@ export class UploadComponent {
       let id=this.getImageID();
       this.files[id].fid=-1;
       this.files[id].src=base64Image;
-      this.files[id].name=this.awri.uid+"-nativecam-"+Date.now()+".jpg";
+      this.files[id].name=this.awri.user.uid+"-nativecam-"+Date.now()+".jpg";
       let input:any = document.getElementById('image'+id);
       input.src=this.files[id].src;
       input.name = this.files[id].name;    
@@ -170,6 +169,7 @@ export class UploadComponent {
   }
 
   uploadFile(imgid){ 
+    this.awri.showLoading("Datei hochladen. Bitte warten...");
     let input:any = document.getElementById('image'+imgid);
     let dataURI=this.files[imgid].src;
     dataURI=dataURI.substring(dataURI.indexOf(',')+1,dataURI.length);     
@@ -187,8 +187,10 @@ export class UploadComponent {
         input.fid=dat.fid;
         this.files[imgid].name=input.name;
         this.files[imgid].fid=dat.fid;
+        this.awri.hideLoading();
      }).catch(err=>{
         console.log(err);
+        this.awri.hideLoading();
         this.awri.showError(err);
      });
   }

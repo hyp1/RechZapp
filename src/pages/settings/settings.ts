@@ -31,7 +31,7 @@ color:any;
 private awri:AwriConnectProvider; 
   constructor(public navCtrl: NavController,public navParams: NavParams,awri:AwriConnectProvider) {   
     this.awri=awri;
-this.username=this.awri.username;
+this.username=this.awri.user.name;
 this.getColor();
   }
   
@@ -43,7 +43,7 @@ this.getColor();
   } 
 
 getUsername(){
-  return this.awri.username;
+  return this.awri.user.name;
 }
 
 login(){

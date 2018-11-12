@@ -13,19 +13,18 @@
       <ion-buttons end>
   <ng-template [ngIf]="this.awri.isInRole('authenticated user')" [ngIfElse]="headerOut">
               <button ion-button (click)="this.gotoLogin()">
-                  <img class="avatar" src="{{this.awri.userpic}}"> {{awri.username}}        
+                  <img class="avatar" src="{{this.awri.user.picture}}"> {{awri.user.name}}        
                 </button>
   </ng-template>      
   <ng-template #headerOut>
               <button ion-button (click)="this.gotoLogin()">
-              <ion-icon name="contact"></ion-icon>  {{awri.username}}
+              <ion-icon name="contact"></ion-icon>  {{awri.user.name}}
               </button>
   </ng-template>
       </ion-buttons>    
     </ion-navbar>
 
 </ion-header>
-
 
 <ion-content padding>
 
@@ -34,11 +33,12 @@
       <p>Bitte beschreiben Sie den Sachverhalt möglichst genau und wählen sie den betreffenden Kanton aus.</p>
     <form #createForm="ngForm" (ngSubmit)="sendFrage()">
 
-        <ion-input type="hidden" value="{{this.awri.username}}" name="username" disabled></ion-input>
-        <ion-input type="hidden" value="{{this.awri.fbid}}" name="username" disabled></ion-input>
+        <ion-input type="hidden" value="{{this.awri.user.name}}" name="username" disabled></ion-input>
+        <ion-input type="hidden" value="{{this.awri.user.fbid}}" name="username" disabled></ion-input>
         <ion-item>
             <ion-label>Kanton</ion-label>
-            <ion-select [(ngModel)]="kanton" name="kanton" (change)="selectKanton($event)">
+
+            <ion-select [(ngModel)]="kanton" name="kanton" (ionChange)="selectKanton2($event)">
 
                 <ion-option *ngFor="let item of kantone" value="{{item.name}}" id="{{item.tid}}">{{item.name}}</ion-option>
 
@@ -69,7 +69,7 @@
                 <ion-input type="hidden" value="{{this.awri.fbid}}" name="username" disabled></ion-input>
               <ion-item>
                   <ion-label>Kanton</ion-label>
-                  <ion-select [(ngModel)]="kanton" name="kanton" (ionChange)="selectKanton($event)">
+                  <ion-select [(ngModel)]="kanton" name="kanton" (ionChange)="selectKanton2($event)" disabled>
                       <ion-option *ngFor="let item of kantone" value="{{item.name}}" id="{{item.tid}}">{{item.name}}</ion-option>
       
                   </ion-select>

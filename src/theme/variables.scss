@@ -97,5 +97,7 @@ $split-pane-side-max-width: 12%;
 .avatar{
   border-radius:50%;
   vertical-align: middle;
+  max-width: 40px !important;
+  max-height: auto !important;
 }
  

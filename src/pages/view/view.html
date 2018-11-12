@@ -13,12 +13,12 @@
     <ion-buttons end>
 <ng-template [ngIf]="this.awri.isInRole('authenticated user')" [ngIfElse]="headerOut">
             <button ion-button (click)="this.gotoLogin()">
-                <img class="avatar" src="{{this.awri.userpic}}"> {{awri.username}}        
+                <img class="avatar" src="{{this.awri.user.picture}}"> {{awri.user.name}}        
               </button>
 </ng-template>      
 <ng-template #headerOut>
             <button ion-button (click)="this.gotoLogin()">
-            <ion-icon name="contact"></ion-icon>  {{awri.username}}
+            <ion-icon name="contact"></ion-icon>  {{awri.user.name}}
             </button>
 </ng-template>
     </ion-buttons>    
@@ -26,17 +26,21 @@
 
 </ion-header>
 
-
 <ion-content padding>
     <ion-card>
+        <ion-list>
         <ion-item>
             <ng-template [ngIf]="awri.isInRole('authenticated user')" [ngIfElse]="loggedOut">
                 <ion-avatar item-start>
                    <img class="avatar" src="https://graph.facebook.com/{{item.node?.field_fbid.und[0].value}}/picture"> 
                  </ion-avatar>
-                 <h2 text-capitalize>{{item.node?.field_fbname.und[0].value}} <ng-template [ngIf]="awri.isAdmin()">           <a href="https://facebook.com/{{item.node?.field_fbid.und[0].value}}" target="new"><ion-icon name="contact"></ion-icon></a>
-                    </ng-template></h2>
-                 <a href="https://facebook.com/{{item.node.field_fbmid.und[0].value}}" target="new"><ion-icon name="logo-facebook"></ion-icon></a>
+                 <h2 *ngIf="item.node?.field_fbname.und" text-capitalize>{{item.node?.field_fbname.und[0].value}}</h2> 
+                
+                 <p>{{item.node.created*1000 | date: 'dd.MM.yyyy H:mm' }}</p> 
+                 <ng-template [ngIf]="awri.isAdmin()">
+                      <a href="https://facebook.com/{{item.node?.field_fbid.und[0].value}}" target="new"><ion-icon name="contact"></ion-icon></a>
+                    </ng-template>
+                 <a *ngIf="item.node.field_fbmid.und" href="https://facebook.com/{{item.node.field_fbmid.und[0].value}}" target="new"><ion-icon name="logo-facebook"></ion-icon></a>
                  <a href="{{this.awri.HOST}}/node/{{item.node.nid}}" target="new"> <ion-icon name="link"></ion-icon></a>     
                 </ng-template>
                <ng-template #loggedOut>
@@ -47,17 +51,19 @@
                  </ng-template>
           </ion-item>
 
-        <ion-item text-wrap>
-            <h3><span innerHTML="{{item.node.body['und'][0].safe_value}}"></span></h3>
-        </ion-item>
-
+            <ion-item text-wrap>
+             <h2 >{{item.node.body['und'][0].value}}</h2>
+            </ion-item>
+        </ion-list>
         </ion-card>
-
+        <p *ngFor="let image of images">        
+       <img src="{{this.awri.getImagePath(image.uri)}}">
+        </p>
 <p *ngFor="let comment of comments | async">
   <ion-card>
     <ion-item text-wrap>
         <p><strong>{{comment.subject}}</strong></p>  <span innerHTML="{{comment.comment_body['und'][0].safe_value}}"></span> 
-      </ion-item>
+      </ion-item>      
   </ion-card>
 </p>
 <button ion-button icon-only (click)="this.goBack()">

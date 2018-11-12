@@ -16,7 +16,7 @@ import { AwriConnectProvider } from '../../providers/awri-connect/awri-connect';
 @IonicPage()
 @Component({
   selector: 'page-view',
-  templateUrl: 'view.html',
+  templateUrl: 'view.html',  
 })
 
 export class ViewPage {
@@ -24,18 +24,13 @@ item:any;
 //rootPage:SearchPage;
 comments:Observable<any>
 awri:AwriConnectProvider;
+images:Array<any>;
 
   constructor(private httpClient:HttpClient, public navCtrl: NavController, public navParams: NavParams,awri:AwriConnectProvider) {
- this.awri=awri;
-    // this.rootPage=<any>SearchPage;
-    this.item = navParams.get('item');
+  this.awri=awri;
+  this.item = navParams.get('item');
   this.getComments(this.item.node.nid);
-
-//console.log(this.item.node.nid);
-  }
-
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad ViewPage');
+  this.images=this.item.node.field_image['und'];
   }
 
   
@@ -43,16 +38,8 @@ getComments(nid){
   
   this.comments =<any> this.httpClient.get(this.awri.HOST+'/drupalgap/comment.json?parameters[nid]='+nid+'&parameters[status]=1&pagesize=150')
       .map(res => res);
-      /*
-      .subscribe(data=>{
-        console.log(data);
-        let vars=<any>data;   
-        vars.forEach(element => {
-          console.log(element);
-        });
-      });
-      */
 }
+
 
 replaceString(str){
   return str.replace('<strong>','<br><strong>')
@@ -62,7 +49,6 @@ goBack(){
   //this.navCtrl.push(SearchPage);
   this.navCtrl.pop();
 }
-
 
 gotoLogin(){
   this.navCtrl.push(LoginPage);
