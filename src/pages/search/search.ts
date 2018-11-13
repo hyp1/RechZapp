@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import "rxjs/add/operator/map";
 
-
 import { ViewPage } from '../../pages/view/view';
 import { LoginPage } from '../../pages/login/login';
 import { AwriConnectProvider } from '../../providers/awri-connect/awri-connect';

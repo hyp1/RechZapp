@@ -7,6 +7,9 @@
 <ng-template [ngIf]="awri.isInRole('authenticated user')" [ngIfElse]="letupload">
 
         <ng-template [ngIf]="awri.isBrowser()" [ngIfElse]="isApp">
+                <div showWhen="mobileweb"> 
+                        <ion-label color="danger" text-wrap>Im Mobilen Browser können keine Dateien ausgewählt werden. </ion-label>
+                      </div>                      
         <div hideWhen="mobileweb">
                 <button ion-button [(ngModel)]="toggleFiles" name="toggleFiles" ngDefaultControl (click)="toggleFil()">Dateien</button>
             <div  *ngIf="toggleFiles">
@@ -63,7 +66,6 @@
           </ion-item>
 
       </ng-template>
-
 
 
 <!--

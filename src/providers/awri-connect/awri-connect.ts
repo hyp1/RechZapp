@@ -61,7 +61,7 @@ public user: {
 };
 
   constructor(public http: HttpClient,public storage: Storage,private plt:Platform,private alertCtrl:AlertController,public loadingCtrl: LoadingController) {
-
+console.log(this.HOST,'init');
 this.user={
   uid:0,
   name:'Unbekannt',
@@ -93,7 +93,6 @@ this.user={
 
   }
   
-
   public set(settingName,value){
     return this.storage.set(`setting:${ settingName }`,value);
   }
@@ -214,12 +213,10 @@ getComments(nid){
     let headers = new HttpHeaders()
     .set('X-CSRF-TOKEN',<string>this.token).set('Content-Type', 'application/json')
     .set('Authentication', <string>this.session);
-    //.set('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE')
-   // .set('Access-Control-Allow-Headers', 'Content-Type,X-CSRF-TOKEN');
   
   let options:any = {
     headers: headers,
-    withCredentials	: 'true',
+    withCredentials	: true,
   };
   
     this.http.get(this.HOST+'/?q=drupalgap/user/'+uid+'.json', options).subscribe(data => {
@@ -276,10 +273,8 @@ getComments(nid){
       });
     });
   });
-
-      
+     
 }
-
   
   fblogin(){
     return new Promise((resolve,reject) => {

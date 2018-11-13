@@ -29,7 +29,11 @@
 
 <ion-content padding>
   
-    <ion-grid>
+  <ion-label color="danger" text-wrap><h3>Wir haben unser System erneuert, die gewohnte AWRI Seite finden Sie nun hier: <a href="https://stage.awri.ch" target="_new">https://stage.awri.ch</a></h3></ion-label>
+
+  <div class="mobile-fab"><ion-label color="primary" text-wrap>Bitte noch etwas Geduld, weitere Updates folgen in Kürze... </ion-label></div>
+
+  <ion-grid>
         <ion-row>
           <ion-col col-12 col-md>
             <ion-card>
@@ -53,11 +57,35 @@
       </ion-col>
         <ion-col col-12 col-md>
             <ion-card>
-                <ion-card-header><h2></h2></ion-card-header>
-                <ion-card-content><p>4 von 4<a href="https://www.facebook.com/groups/RechtsberatungSchweiz/" target="_BLANK">Rechtsforum Schweiz</a></p></ion-card-content>
+                <ion-card-header><h2>Rechtsfragen stellen</h2></ion-card-header>
+                <ion-card-content>
+                  <ion-label color="danger" text-wrap>Nur auf AWRI angemeldete Benutzer können anonyme Rechtsfragen stellen.</ion-label>
+                  <p>Wenn sie ihre Frage nicht anonym stellen möchten, können sie Ihre Frage direkt in der Gruppe stellen.</p>
+                  <p>Rechtsfragen die Sie über diese Seite stelllen, werden per Email an einen Administrator oder Moderator gesendet. Dieser stellt Ihre Frage <strong>anonym</strong> für Sie in der Facebook Gruppe <a href="https://www.facebook.com/groups/RechtsberatungSchweiz/" target="_BLANK">Rechtsforum Schweiz</a>.
+                  </p>
+          
+                </ion-card-content>
           </ion-card>
           </ion-col>
         </ion-row>
       </ion-grid>
        
+  <ion-grid>
+      <ion-row>
+        <ion-col>
+            <ion-card>
+                <ion-card-header><h2>AWRI Statistik ({{this.awri.stats.updated}})</h2></ion-card-header>
+                <ion-card-content>
+                    <ion-label>AWRI Benutzer {{this.awri.stats.users}}</ion-label>
+                    <ion-label>Rechtsfragen {{this.awri.stats.nodesc}}/{{this.awri.stats.nodes}}</ion-label>
+                    <ion-label>Antworten {{this.awri.stats.commentsc}}/{{this.awri.stats.comments}}</ion-label>
+                    <ion-label>Hinweise auf  Art. OR {{this.awri.stats.ors}}</ion-label>
+                    <ion-label>Hinweise auf ZGB {{this.awri.stats.zgbs}}</ion-label>
+                     <ion-label>Hinweise auf BGE {{this.awri.stats.bges}}</ion-label>
+                </ion-card-content>
+              </ion-card>
+        </ion-col>
+        </ion-row>
+  </ion-grid>
+  
 </ion-content>

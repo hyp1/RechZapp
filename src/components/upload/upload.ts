@@ -169,7 +169,8 @@ export class UploadComponent {
   }
 
   uploadFile(imgid){ 
-    this.awri.showLoading("Datei hochladen. Bitte warten...");
+    return new Promise((resolve,reject)=>{
+
     let input:any = document.getElementById('image'+imgid);
     let dataURI=this.files[imgid].src;
     dataURI=dataURI.substring(dataURI.indexOf(',')+1,dataURI.length);     
@@ -182,23 +183,39 @@ export class UploadComponent {
        "status": 0,
        "file": dataURI 
     };   
-    if(this.files[imgid].fid==-1&&this.files[imgid].name!=='')this.awri.uploadFile(filedata).then(data=>{
+    if(this.files[imgid].fid==-1&&this.files[imgid].name!==''){
+      this.awri.showLoading("Datei hochladen. Bitte warten...");
+      this.awri.uploadFile(filedata).then(data=>{
         let dat:any=data;
         input.fid=dat.fid;
         this.files[imgid].name=input.name;
         this.files[imgid].fid=dat.fid;
+        resolve(this.files[imgid]);
         this.awri.hideLoading();
      }).catch(err=>{
         console.log(err);
+        reject(err);
+
         this.awri.hideLoading();
         this.awri.showError(err);
      });
+    }
+    });
   }
 
 
   uploadAllFiles(){
     for(var i=0;i<this.MAX_UPLOADS;i++)    
-      if(this.files[i].fid==-1&&this.files[i].name!='')this.uploadFile(i);     
+      if(this.files[i].fid==-1&&this.files[i].name!=''){
+        this.uploadFile(i);     
+        this.awri.loading.dismiss();
   }
+}
+
+resetFiles(){
+  for(var i=0;i<this.MAX_UPLOADS;i++)    
+      this.removeImage(i);     
+}
+
 
 }

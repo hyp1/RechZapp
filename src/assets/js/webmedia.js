@@ -39,8 +39,8 @@ function stopVideo(){
 if(stream!=null)stream.getVideoTracks()[0].stop();;
 stream=null;
 }
-
-var constraints = { audio: false, video: true }; 
+var front=true; 
+var constraints = { audio: false, video: { facingMode: (front? "user" : "environment")}}; 
 
 function startVideo(video){
 

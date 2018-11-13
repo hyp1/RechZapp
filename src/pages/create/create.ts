@@ -64,7 +64,7 @@ export class CreatePage {
   }   
   
   this.awri.createFrage(data).then(dat=>{
-   this.removeAll();
+   
       console.log(dat);
       let alert = this.alertCtrl.create({
         title: 'Rechtsfrage gesendet',
@@ -72,7 +72,7 @@ export class CreatePage {
         buttons: ['Weiter']
       });
       alert.present();
-
+      this.removeAll();
   }).catch(err=>{
     this.awri.showError(err);
   });
@@ -85,23 +85,22 @@ export class CreatePage {
   }
 
 
-  
   removePreview(nr) : void {
-    var filefield:any = document.getElementById('filefield'+nr);
-    var previewfield:any = document.getElementById('preview'+nr);
-    previewfield.src="assets/imgs/anonymous.png";
+   // var filefield:any = document.getElementById('filefield'+nr);
+    var previewfield:any = document.getElementById('image'+nr);
+   if(previewfield) previewfield.src="";
     //console.log(filefield);
-    filefield.style="display: block !important";
+   // filefield.style="display: block !important";
    }
    
+
   removeAll() : void {
     this.files=[];
-    for(var i=0;i<this.upload.MAX_UPLOADS;i++){
-      this.removePreview(i);
-    }
+  this.upload.resetFiles();
   this.todo.description="";
   }
 
+  /*
   uploadFile(id) : void {    
     var input:any = document.getElementById('image'+id);
     var dataURI=input.src;
@@ -129,7 +128,7 @@ export class CreatePage {
   }
 
 
-
+*/
 
   selectKanton2(evt){
     this.kanton=evt
@@ -143,9 +142,7 @@ export class CreatePage {
     
   }
 
-
   gotoLogin(){
-
     this.navCtrl.push(LoginPage);
   }
 

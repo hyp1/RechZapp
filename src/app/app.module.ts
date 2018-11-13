@@ -27,8 +27,6 @@ import { UploadComponent } from '../components/upload/upload';
 import { FragenProvider } from '../providers/fragen/fragen';
 
 
-
-
 @NgModule({
   declarations: [
     MyApp,

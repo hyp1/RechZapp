@@ -17,6 +17,7 @@ export class LoginPage {
     this.awri=awri;
   }
 
+  
   ionViewDidLoad() {
     console.log('ionViewDidLoad LoginPage');
   }
@@ -24,6 +25,7 @@ export class LoginPage {
   login(){
     //alert('username: ' + this.username);
     this.awri.login(this.username,this.password).then(data=>{      
+      console.log(data);
     }).catch(err=>{
       this.username="";
       this.password="";

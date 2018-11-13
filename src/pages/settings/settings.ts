@@ -1,4 +1,4 @@
-import { Component,Input,ViewChild } from '@angular/core';
+import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { AwriConnectProvider } from '../../providers/awri-connect/awri-connect';
 
@@ -35,12 +35,6 @@ this.username=this.awri.user.name;
 this.getColor();
   }
   
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad SettingsPage');
-  //  setTimeout(() => {
-  //    this.username.setFocus();
-  //  }, 500);  
-  } 
 
 getUsername(){
   return this.awri.user.name;
@@ -49,13 +43,11 @@ getUsername(){
 login(){
   //alert('username: ' + this.username);
   this.awri.login(this.username,this.password).then(data=>{
-    console.log(data);
+   // console.log(data);
   }).catch(err=>{
-      console.log("ERROR");
+      console.log(err);
   });
-  
- // console.log(this.mylblRef.nativeElement.innerText);
-//  this.username="Bert"
+
 }
 
 dofblogin(){
