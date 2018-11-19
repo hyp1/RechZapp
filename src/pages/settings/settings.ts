@@ -27,14 +27,23 @@ color:any;
 
   private fbtoken:String;
 
+  private help:any;
+
   //password:string='kimo2002';
 private awri:AwriConnectProvider; 
   constructor(public navCtrl: NavController,public navParams: NavParams,awri:AwriConnectProvider) {   
     this.awri=awri;
 this.username=this.awri.user.name;
 this.getColor();
+
+this.help=this.awri.getHelp();
   }
   
+  
+ helpChanged(){
+ console.log(this.help);
+this.awri.setHelp(this.help);
+  }
 
 getUsername(){
   return this.awri.user.name;
@@ -63,7 +72,6 @@ let color:string;
     console.log(data2);
     let res2=<any>data2;
      
-
   });
  // console.log(data);
 });

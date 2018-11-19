@@ -30,8 +30,14 @@
 <ion-content padding>
   <ng-template [ngIf]="this.awri.isInRole('authenticated user')" [ngIfElse]="loggedOut">
       <ion-item>
-          <ion-label>{{awri.HOST}}</ion-label>        
+          <ion-label color="secondary">{{awri.HOST}}</ion-label>        
         </ion-item>
+        <ion-item>
+            <ion-avatar item-start>
+              <ion-img [src]="this.awri.user.picture"></ion-img>
+            </ion-avatar>
+            {{ this.awri.user.name }} 
+          </ion-item>
     <ion-item>
         
           <ion-label>Sie sind als {{awri.user.name}} angemeldet</ion-label>        

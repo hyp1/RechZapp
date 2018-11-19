@@ -28,11 +28,12 @@ declare var openFB;
 @Injectable()
 export class AwriConnectProvider {
 
-
 //public  HOST='http://kimo2007.dnshome.de:8888/stage.awri.ch'
 //public  HOST='http://localhost/stage.awri.ch'
 
-public  HOST='https://stage.awri.ch'
+
+public  HOST='https://stage.awri.ch';
+
 
 //public uid:Number;
 //public username:String;
@@ -59,6 +60,7 @@ public user: {
   created: number;
   fbid: number;
 };
+private help:boolean;
 
   constructor(public http: HttpClient,public storage: Storage,private plt:Platform,private alertCtrl:AlertController,public loadingCtrl: LoadingController) {
 console.log(this.HOST,'init');
@@ -71,7 +73,7 @@ this.user={
   created:Date.now(),
   fbid:0
 };
-
+this.help=true;
 
 //    this.uid=0;
 //    this.username='Unbekannt';
@@ -89,7 +91,8 @@ this.user={
     },err=>{
       console.log(err);
     });
-    
+
+    this.getHelp();
 
   }
   
@@ -103,6 +106,21 @@ this.user={
   public async remove(settingName){
     return await this.storage.remove(`setting:${ settingName }`);
   }
+
+setHelp(help){
+this.set('help',help).then(res=>{
+  this.help=res;
+});
+}
+
+getHelp(){
+  this.get('help').then(col=>{
+    this.help=col;
+ // console.log(this.help,'LOADED');
+  });
+ return this.help;
+  }
+  
 
   public clear() {
     let alert = this.alertCtrl.create({

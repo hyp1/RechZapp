@@ -33,12 +33,19 @@
 
   <div class="mobile-fab"><ion-label color="primary" text-wrap>Bitte noch etwas Geduld, weitere Updates folgen in Kürze... </ion-label></div>
 
+  <ion-item>
+      <ion-avatar item-start>
+        <ion-img [src]="this.awri.user.picture"></ion-img>
+      </ion-avatar>
+      {{ this.awri.user.name }} 
+    </ion-item>
+
   <ion-grid>
         <ion-row>
           <ion-col col-12 col-md>
             <ion-card>
-              <ion-card-header><h2>Sie suchen die alte AWRI Seite?</h2></ion-card-header>
-              <ion-card-content><a href="https://stage.awri.ch" target="_BLANK">https://stage.awri.ch</a></ion-card-content>
+              <ion-card-header><h2>Anmelden</h2></ion-card-header>
+              <ion-card-content>angemeldete Benutzer können, anonyme Rechtsfragen stellen, links zu den original Beiträgen nutzen, Lesezeichen setzen, uvm</ion-card-content>
             </ion-card>
           </ion-col>
           <ion-col col-12 col-md>
@@ -52,7 +59,7 @@
           <ion-col col-12 col-md>
               <ion-card>
               <ion-card-header><h2>Wer beantwortet die Fragen?</h2></ion-card-header>
-              <ion-card-content><p>Die Mitglieder der Facebookgruppe <a href="https://www.facebook.com/groups/RechtsberatungSchweiz/" target="_BLANK">Rechtsforum Schweiz</a></p></ion-card-content>
+              <ion-card-content><p>Die Mitglieder der Facebookgruppe<a href="https://www.facebook.com/groups/RechtsberatungSchweiz/" target="_BLANK"><img class="avatar" src="assets/imgs/fb_group_s.png"> Rechtsforum Schweiz</a></p></ion-card-content>
         </ion-card>
       </ion-col>
         <ion-col col-12 col-md>
@@ -74,14 +81,14 @@
       <ion-row>
         <ion-col>
             <ion-card>
-                <ion-card-header><h2>AWRI Statistik ({{this.awri.stats.updated}})</h2></ion-card-header>
+                <ion-card-header><h2>AWRI Statistik ({{this.awri.stats?.updated}})</h2></ion-card-header>
                 <ion-card-content>
-                    <ion-label>AWRI Benutzer {{this.awri.stats.users}}</ion-label>
-                    <ion-label>Rechtsfragen {{this.awri.stats.nodesc}}/{{this.awri.stats.nodes}}</ion-label>
-                    <ion-label>Antworten {{this.awri.stats.commentsc}}/{{this.awri.stats.comments}}</ion-label>
-                    <ion-label>Hinweise auf  Art. OR {{this.awri.stats.ors}}</ion-label>
-                    <ion-label>Hinweise auf ZGB {{this.awri.stats.zgbs}}</ion-label>
-                     <ion-label>Hinweise auf BGE {{this.awri.stats.bges}}</ion-label>
+                    <ion-label>AWRI Benutzer {{this.awri.stats?.users}}</ion-label>
+                    <ion-label>Rechtsfragen {{this.awri.stats?.nodesc}}/{{this.awri.stats?.nodes}}</ion-label>
+                    <ion-label>Antworten {{this.awri.stats?.commentsc}}/{{this.awri.stats?.comments}}</ion-label>
+                    <ion-label>Hinweise auf  Art. OR {{this.awri.stats?.ors}}</ion-label>
+                    <ion-label>Hinweise auf ZGB {{this.awri.stats?.zgbs}}</ion-label>
+                     <ion-label>Hinweise auf BGE {{this.awri.stats?.bges}}</ion-label>
                 </ion-card-content>
               </ion-card>
         </ion-col>

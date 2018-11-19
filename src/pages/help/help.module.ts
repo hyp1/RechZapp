@@ -10,4 +10,5 @@ import { HelpPage } from './help';
     IonicPageModule.forChild(HelpPage),
   ],
 })
+
 export class HelpPageModule {}

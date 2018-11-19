@@ -168,6 +168,7 @@ export class UploadComponent {
   this.hideUpl=true;
   }
 
+  
   uploadFile(imgid){ 
     return new Promise((resolve,reject)=>{
 

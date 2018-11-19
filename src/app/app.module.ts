@@ -41,7 +41,6 @@ import { FragenProvider } from '../providers/fragen/fragen';
     UploadComponent
   ],
   
-
   imports: [
     BrowserModule,
     IonicModule.forRoot(MyApp),

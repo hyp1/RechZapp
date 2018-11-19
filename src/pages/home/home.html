@@ -28,13 +28,14 @@
 </ion-header>
    
   <ion-content padding>
+    icon:      <h2><ion-icon name="rechzapp-awri" color="primary"></ion-icon></h2>
       <ng-template [ngIf]="!awri.isInRole('authenticated user')" >
           <ion-label color="danger"><h2><ion-img  src="assets/imgs/anonymous.png"></ion-img> Sie sind nicht angemeldet!</h2></ion-label>
             <ion-label>Bitte melden sie sich um Zugriff auf erweiterte Funktionen zu erhalten.</ion-label>
             <button ion-button small (click)="gotoLogin()">Anmelden</button>               
         </ng-template>
-
-
+      
+        <ng-template [ngIf]="this.awri.help">Scrollen per Touchscreen oder Tastatur</ng-template>
     
         <ion-list>
             <ion-item>
@@ -52,7 +53,7 @@
                     <ion-item>        
                      <ng-template [ngIf]="awri.isInRole('authenticated user')" [ngIfElse]="loggedOut1">
                       <ion-avatar item-start>
-                         <img class="avatar" src="https://graph.facebook.com/{{item.node?.field_fbid.und[0].value}}/picture"> 
+                         <img class="avatar" src="https://graph.facebook.com/{{(item.node.field_fbid.und[0]?item.node.field_fbid.und[0].value:0)}}/picture"> 
                          <h2 text-capitalize>{{item.node?.field_fbname.und[0].value}}</h2>
                          <p>{{item.node.created*1000 | date: 'dd.MM.yyyy H:mm' }}</p>
                        </ion-avatar>
@@ -115,6 +116,6 @@
   
   <ion-footer>
     <ion-toolbar>
-      <ion-title>Powered by <a href="{{this.awri.HOST}}" target="_BLANK">AWRI</a> <small>{{this.awri.stats?.nodesc}} Rechtsfragen</small></ion-title>
+      <ion-title>Powered by <ion-icon name="rechzapp-awri" color="primary"></ion-icon> <a href="{{this.awri.HOST}}" target="_BLANK">AWRI</a> <small>{{this.awri.stats?.nodesc}} Rechtsfragen</small></ion-title>
     </ion-toolbar>
   </ion-footer>

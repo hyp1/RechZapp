@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import "rxjs/add/operator/map";
-
 import { ViewPage } from '../../pages/view/view';
 import { LoginPage } from '../../pages/login/login';
 import { AwriConnectProvider } from '../../providers/awri-connect/awri-connect';
@@ -26,7 +25,6 @@ export class SearchPage {
   }
 
 
-
   dosearch(): void {
     this.error="",
  //   console.log("SEARCH:"+this.text);    
@@ -38,7 +36,6 @@ export class SearchPage {
 //    this.awri.showError("Die Suche nach '"+this.text+"' brachte keine Ergebnisse...");
    });
   }
-
   search(text): void {
     this.error="",
     this.text=text;
@@ -50,6 +47,7 @@ export class SearchPage {
        //this.awri.showError());
       });
      }
+
 
   itemSelected(item: any): void {
 

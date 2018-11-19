@@ -25,7 +25,6 @@
     </ion-navbar>
 
 </ion-header>
-  
 
 <ion-content padding>
   <ion-list>
@@ -34,6 +33,8 @@
       <ion-input  [(ngModel)]="text" placeholder="Rechtsfrage suchen..." clearInput></ion-input>
     </ion-item>
     </ion-list>    
+    <ng-template [ngIf]="this.awri.help"><ion-label color="secondary">Suche per Schlüsselwörtern</ion-label></ng-template>
+
     <button ion-button round full (click)="dosearch()" icon-start><ion-icon name="search"  item-left></ion-icon> Suchen</button>
     <ion-label color="danger" text-wrap><h3>{{error}}</h3></ion-label>
   <ion-grid>
@@ -43,8 +44,7 @@
          <ion-item>        
           <ng-template [ngIf]="awri.isInRole('authenticated user')" [ngIfElse]="loggedOut">
            <ion-avatar item-start>
-              <img class="avatar" src="https://graph.facebook.com/{{item.node?.field_fbid.und[0].value}}/picture"> 
-              {{item.node.nid}}
+              <img class="avatar" src="https://graph.facebook.com/{{(item.node.field_fbid.und[0]?item.node.field_fbid.und[0].value:0)}}/picture"> 
               <h2 text-capitalize>{{item.node?.field_fbname.und[0].value}}</h2>
               <p>{{item.node.created*1000 | date: 'dd.MM.yyyy H:mm' }}</p>
             </ion-avatar>

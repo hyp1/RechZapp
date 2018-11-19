@@ -7,9 +7,10 @@ function scriptTest(){
 
 
 //Browser File Select
+
 function webpreviewFile(filefield,previewid){
-    return new Promise((resolve,reject)=>{
-   // console.log(filefield);
+    return new Promise(function (resolve,reject){
+   // console.log(previewid);
 if(typeof filefield.files!=='undefined'){
     var preview = document.querySelector(previewid); //selects the query named img
     var file    =filefield.files[0]; //sames as here
@@ -36,7 +37,7 @@ if(typeof filefield.files!=='undefined'){
 
 var stream = null;
 function stopVideo(){
-if(stream!=null)stream.getVideoTracks()[0].stop();;
+if(stream!=null)stream.getVideoTracks()[0].stop();
 stream=null;
 }
 var front=true; 
@@ -46,13 +47,13 @@ function startVideo(video){
 
 navigator.mediaDevices.getUserMedia(constraints)
 .then(function(mediaStream) {
-  var video = document.querySelector('video');
+  var video = document.querySelector('video#video1');
   stream=mediaStream;
   video.srcObject = stream;
   video.onloadedmetadata = function(e) {
     video.play();
   };
-}).catch(err=>{
+}).catch(function(err){
     alert(err);
 });
     /*
@@ -101,9 +102,9 @@ console.log("An error occured! " + err);
 
 
 function snapShot(imageelem){    
-    var preview= document.getElementById(imageelem);
-    var video = document.getElementById('video1');
-    var canvas = document.getElementById('canvas1');
+    var preview= document.querySelector('img#'+imageelem);
+    var video = document.querySelector('video#video1');
+    var canvas = document.querySelector('canvas#canvas1');
     var context = canvas.getContext('2d');
         context.drawImage(video, 0, 0, 640, 480);
 //        var image = new Image();

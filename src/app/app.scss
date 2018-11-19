@@ -60,3 +60,21 @@ split-pane-side {
 background-color: #2e8015;
      
  }
+
+
+ ion-icon {
+   &[class*="rechzapp-"] {
+       // Instead of using the font-based icons
+       // We're applying SVG masks
+       mask-size: contain;
+       mask-position: 50% 50%;
+       mask-repeat: no-repeat;
+       background: currentColor;
+       width: 1em;
+       height: 1em;
+   }
+   // custom icons
+   &[class*="rechzapp-awri"] {
+       mask-image: url("../assets/icon/awri.svg");
+   }
+}

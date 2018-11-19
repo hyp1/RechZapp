@@ -113,6 +113,7 @@ this.content.scrollTo(0, yOffset, 4000).then(data=>{
 });
   }
 
+  
   scrollToTop(): void {
     if (!this.scrollingTop) {
       this.scrollingTop = true;

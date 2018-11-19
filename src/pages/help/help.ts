@@ -30,8 +30,6 @@ export class HelpPage {
   }
 
 
-
-
 gotoLogin():void{
   this.navCtrl.push(LoginPage)
 }    
