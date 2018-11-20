@@ -92,7 +92,7 @@ this.help=true;
       console.log(err);
     });
 
-    this.getHelp();
+   // this.getHelp();
 
   }
   
@@ -110,6 +110,8 @@ this.help=true;
 setHelp(help){
 this.set('help',help).then(res=>{
   this.help=res;
+}).catch(err=>{
+  console.log(err);
 });
 }
 
@@ -117,7 +119,9 @@ getHelp(){
   this.get('help').then(col=>{
     this.help=col;
  // console.log(this.help,'LOADED');
-  });
+  }).catch(err=>{
+    console.log(err);
+  });;
  return this.help;
   }
   
