@@ -10,8 +10,7 @@ import { CreatePage } from '../pages/create/create';
 import { HelpPage } from '../pages/help/help';
 import { AwriConnectProvider } from '../providers/awri-connect/awri-connect';
 import { FragenProvider } from '../providers/fragen/fragen';
-//import { ViewPage } from '../pages/view/view';
-//import { UploadComponent } from '../components/upload/upload';
+
 
 @Component({
   templateUrl: 'app.html'
