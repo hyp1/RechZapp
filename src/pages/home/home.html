@@ -10,8 +10,8 @@
             <ion-title>
                 Home 
               </ion-title>
-      <ion-buttons end>
-     
+
+      <ion-buttons end>     
   <ng-template [ngIf]="this.awri.isInRole('authenticated user')" [ngIfElse]="headerOut">
     <button ion-button (click)="gotoLogin()">
       <img class="avatar" src="{{this.awri.user.picture}}"> {{awri.user.name}}        
@@ -35,8 +35,7 @@
             <button ion-button small (click)="gotoLogin()">Anmelden</button>               
         </ng-template>
       
-        <ng-template [ngIf]="this.awri.help">Scrollen per Touchscreen oder Tastatur</ng-template>
-    
+      
         <ion-list>
             <ion-item>
               <ion-label> <ion-icon name="search"></ion-icon></ion-label>
@@ -45,6 +44,8 @@
             </ion-list>
             <button ion-button round full (click)="dosearch()" icon-start><ion-icon name="search" item-right></ion-icon>  Suchen </button>
             <ion-label color="danger" text-wrap><h3>{{error}}</h3></ion-label>
+  
+            <ng-template [ngIf]="this.awri.help"><ion-label color="secondary"><ion-icon name="help"></ion-icon> Scrollen Sie per Touchscreen oder Tastatur zurück bis 23.3.2015</ion-label></ng-template>
   
             <ion-grid>
               <ion-row>
