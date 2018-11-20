@@ -41,6 +41,7 @@ this.help=this.awri.getHelp();
   
   
  helpChanged(){
+
  console.log(this.help);
 this.awri.setHelp(this.help);
   }

@@ -30,8 +30,8 @@
 
 <ion-content padding>
         <ion-item>
-                <ion-label>Hilfe an</ion-label>
-                <ion-toggle [(ngModel)]="help" (click)="helpChanged(this);"></ion-toggle>
+                <ion-label>Hilfe</ion-label>
+                <ion-toggle [(ngModel)]="help" (ionChange)="helpChanged(this);"></ion-toggle>
               </ion-item>
 
  <ng-template [ngIf]="awri.isLoggedIn()" [ngIfElse]="loggedOut">

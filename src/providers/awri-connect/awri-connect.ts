@@ -92,24 +92,25 @@ this.help=true;
       console.log(err);
     });
 
-   // this.getHelp();
+    this.getHelp();
 
   }
   
   public set(settingName,value){
-    return this.storage.set(`setting:${ settingName }`,value);
+    return this.storage.set('setting:${ settingName }',value);
   }
   public async get(settingName){
-    return await this.storage.get(`setting:${ settingName }`);
+    return await this.storage.get('setting:${ settingName }');
   }
   
   public async remove(settingName){
-    return await this.storage.remove(`setting:${ settingName }`);
+    return await this.storage.remove('setting:${ settingName }');
   }
 
 setHelp(help){
-this.set('help',help).then(res=>{
+  this.set('help',help).then(res=>{
   this.help=res;
+  return this.help;
 }).catch(err=>{
   console.log(err);
 });
