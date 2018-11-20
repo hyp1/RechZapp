@@ -36,7 +36,6 @@
         "cordova-plugin-device": "^2.0.2",
         "cordova-plugin-inappbrowser": "3.0.0",
         "cordova-plugin-ionic-keyboard": "^2.1.3",
-        "cordova-plugin-ionic-webview": "2.2.3",
         "cordova-plugin-splashscreen": "^5.0.2",
         "cordova-plugin-statusbar": "^2.4.2",
         "cordova-plugin-whitelist": "^1.3.3",
@@ -67,8 +66,7 @@
             "cordova-plugin-whitelist": {},
             "cordova-plugin-inappbrowser": {},
             "cordova-plugin-camera": {},
-            "cordova-sqlite-evcore-extbuild-free": {},
-            "cordova-plugin-ionic-webview": {}
+            "cordova-sqlite-evcore-extbuild-free": {}
         },
         "platforms": [
             "android"
