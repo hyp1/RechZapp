@@ -20,7 +20,7 @@
         "@angular/http": "5.2.11",
         "@angular/platform-browser": "5.2.11",
         "@angular/platform-browser-dynamic": "5.2.11",
-        "@ionic-native/admob-free": "^4.16.0",
+        "@ionic-native/admob-free": "^4.17.0",
         "@ionic-native/camera": "^4.17.0",
         "@ionic-native/core": "~4.15.0",
         "@ionic-native/in-app-browser": "^4.17.0",
