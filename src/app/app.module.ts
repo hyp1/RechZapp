@@ -63,13 +63,13 @@ import { FragenProvider } from '../providers/fragen/fragen';
 
   providers: [
     StatusBar,    
-    SplashScreen,
-    AdMobFree,
-    Camera,
+    SplashScreen,    
     {provide: ErrorHandler, useClass: IonicErrorHandler},
+    Camera,
     AwriConnectProvider,
     UploadComponent,
-    FragenProvider
+    FragenProvider,
+    AdMobFree,
   ]
 })
 
