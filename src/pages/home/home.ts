@@ -39,15 +39,15 @@ page:number;
 scrollingTop:boolean;
   constructor(public navCtrl: NavController,private admobFree: AdMobFree, awri: AwriConnectProvider) {
     this.error="";
-    this.rootPage = <any>HomePage;
+  //  this.rootPage = <any>HomePage;
     this.awri=awri;
     this.page=0;
     this.pages=10;
     this.index=[];
 
-this.getFragen();
+//this.getFragen();
 //Suche persistent
-  this.items=<any>awri.getItems();
+//  this.items=<any>awri.getItems();
 
   this.admobFree.banner.config(bannerConfig);
 
@@ -59,6 +59,8 @@ this.getFragen();
       })
       .catch(e => console.log(e));    
   }
+
+
   gotoLogin():void{
       this.navCtrl.push(LoginPage)
   }    
