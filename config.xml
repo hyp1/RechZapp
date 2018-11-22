@@ -89,4 +89,5 @@
         <variable name="ADMOB_APP_ID" value="ca-app-pub-7681642173883266~6820035049" />
     </plugin>
     <plugin name="cordova-plugin-camera" spec="4.0.3" />
+    <engine name="android" spec="^7.1.2" />
 </widget>
