@@ -7,8 +7,6 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
 
-//AdMob
-import { AdMobFree } from '@ionic-native/admob-free';
 import { IonicStorageModule } from '@ionic/storage';
 import { AwriConnectProvider } from '../providers/awri-connect/awri-connect';
 
@@ -26,6 +24,8 @@ import { Camera} from '@ionic-native/camera';
 import { UploadComponent } from '../components/upload/upload';
 import { FragenProvider } from '../providers/fragen/fragen';
 
+//AdMob
+import { AdMobFree } from '@ionic-native/admob-free';
 
 @NgModule({
   declarations: [
