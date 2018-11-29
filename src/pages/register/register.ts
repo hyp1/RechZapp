@@ -19,7 +19,7 @@ email:String;
 password:String;
 password2:String;
 awri:AwriConnectProvider
-  constructor(public navCtrl: NavController, public navParams: NavParams,awri:AwriConnectProvider,alertCtrl:AlertController) {
+  constructor(public navCtrl: NavController, public navParams: NavParams,awri:AwriConnectProvider,public alertCtrl:AlertController) {
     this.awri=awri;
     this.username="";
     this.email="";
@@ -58,5 +58,15 @@ fblogin(){
   });
 })
 };
+
+showError(msg){
+  let alert = this.alertCtrl.create({
+    title: 'Fehler',
+    message: msg,
+    buttons: ['Weiter']
+  });
+  alert.present();
+}
+
 
 }

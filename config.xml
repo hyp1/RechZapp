@@ -90,4 +90,5 @@
     </plugin>
     <plugin name="cordova-sqlite-evcore-extbuild-free" spec="0.9.9" />
     <engine name="android" spec="~7.1.2" />
+    <engine name="ios" spec="~4.5.5" />
 </widget>
